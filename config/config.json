@@ -1,0 +1,35 @@
+{
+  "development": {
+    "port": "",
+    "db": {
+      "host": "",
+      "username": "",
+      "password": "",
+      "database": "",
+      "multipleStatements": true,
+      "timezone": "",
+      "operatorsAliases": false,
+      "dialect": "",
+      "port": ""
+    },
+    "path": {
+      "index": "",
+      "upload_path": ""
+    }  
+  },
+  "production": {
+    "port": "",
+    "db": {
+        "host": "",
+        "port": "",
+        "user": "",
+        "username": "",
+        "password": "",
+        "database": "",
+        "multipleStatements": true,
+        "timezone": "",
+        "operatorsAliases": false,
+        "dialect": ""
+    }
+  }
+}
