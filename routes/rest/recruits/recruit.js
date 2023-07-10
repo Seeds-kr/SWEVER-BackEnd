@@ -28,16 +28,19 @@ async function getRecruits(req, res) {
                 }
             ]
         });
-
-        res.send(resp);
+        res.send([{
+            Message: "Success", 
+            ResultCode: "ERR_OK",            
+            Size: 10,
+            Response: resp
+        }])
     }
     catch (err) {
-        //bad request
-        console.log(err);
-        res.status(400).send({
-            result: false,
-            msg: err.toString()
-        });
+        console.log(err);        
+        res.status(500).send([{            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        }]);
     }
 }
 

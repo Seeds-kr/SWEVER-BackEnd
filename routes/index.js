@@ -8,8 +8,9 @@ const options={
     optionSuccessStatus: 200
 };
 
-//router.use('/rest', require('./rest/'));
+router.use('/rest', require('./rest'));
 router.use(cors(options));
-router.use('/rest/search', require('./rest/recruits'));
+// router.get('/rest/join', renderJoin);
+// router.get('/rest/profile', renderProfile);
 
 module.exports = router;

@@ -1,9 +1,8 @@
 // //Default routing page (/rest*)
+const express = require('express');
+const router = express.Router();
 
-// console.log("111");
-// const express = require('express');
-// const router = express.Router();
-// const models = require('../../models');
-// const sha256 = require('sha256');
+router.use('/main', require('./main'));
+router.use('/search', require('./recruits'));
 
-// module.exports = router;
+module.exports = router;
