@@ -1,11 +1,11 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var compression = require('compression');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const compression = require('compression');
 
-var sequelize = require('./models').sequelize;
+const sequelize = require('./models').sequelize;
 const config = require('./config/config.json')[process.env.NODE_ENV || 'development'];
 // const viewPath = config.path;
 const cors = require('cors');
@@ -13,7 +13,7 @@ const session = require('express-session');
 const history = require('connect-history-api-fallback');
 const MySQLStore = require('express-mysql-session')(session);
 
-var app = express();
+const app = express();
 sequelize.sync();
 
 // if(process.env.NODE_ENV === 'production') {
