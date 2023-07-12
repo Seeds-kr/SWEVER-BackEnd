@@ -6,12 +6,10 @@ async function getMain(req, res) {
     try {
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['recruit_id','nation_id','company_name','company_city','description_title','description_content','company_apply_link',
-                'posted_date','is_visa_sponsored','is_remoted','company_logo','salary','contract_form',
-                'company_page_link','origin','tag','location','is_dev','created_at','created_by',
-                'updated_at','updated_by'
+                ['company_name', 'company_logo','description_title',
+                 'is_visa_sponsored','is_remoted','location', 'posted_date',
             ],
-            limit: 5,
+            limit: 6,
             order: [
                 ['posted_date', 'DESC']
             ],
