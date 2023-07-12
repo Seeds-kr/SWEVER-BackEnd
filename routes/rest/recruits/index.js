@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getRecruits    
+    getRecruits_pagination    
 } = require('./recruit.js');
 
-router.get('/:page', getRecruits);
+router.get('/:page', getRecruits_pagination);
 
 router.post('/', (req, res)=>{
     res.status(405).send([{

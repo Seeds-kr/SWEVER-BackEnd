@@ -2,24 +2,27 @@ const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
 
-async function getRecruits(req, res) {
-    try {
-        const pid = req.params.page;
-        //const keyword = req.query.keyword;
-        //const location = req.query.location;
-        const query_remote = req.query.remote;
-        const query_visa = req.query.visa;
-        let remote = 0;
-        let visa = 0;
-        let nation = 0;
+async function getRecruits_pagination(req, res) {    
+    const pageNum = req.params.page;
+    //const keyword = req.query.keyword;
+    //const query_nation = req.query.nation;
+    const query_remote = req.query.remote;
+    const query_visa = req.query.visa;
+    let remote = 0;
+    let visa = 0;
+    let nation = 0;
 
-        if (query_remote=="true") {
-            remote = 1;
-        }
-        if (query_visa=="true") {
-            visa = 1;
-        }
-        const resp = await models.recruit_post.findAll({
+    if (query_remote=="true") {
+        remote = 1;
+    }
+    if (query_visa=="true") {
+        visa = 1;
+    }
+    const limit = 10;
+    const offset = limit * (parseInt(pageNum) - 1);
+    try {
+        let resp = await models.recruit_post.findAll({
+            group: ['recruit_id'],
             attributes: 
                 ['recruit_id','nation_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
@@ -44,6 +47,7 @@ async function getRecruits(req, res) {
                 }
             ]
         });
+        resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
         res.send([{
             Message: "Success", 
             ResultCode: "ERR_OK",            
@@ -60,49 +64,6 @@ async function getRecruits(req, res) {
     }
 }
 
-// async function getRecruits_pagination(req, res) {
-//     const pageNum = req.query.page;
-//     const limit = 8;
-//     const offset = limit * (parseInt(pageNum) - 1);
-//     try {
-//         let resp = await models.application.findAll({
-//             group: ['application.id'],
-//             order: [
-//                 ['startTime', 'DESC']
-//             ],
-//             attributes: {
-//                  include: [[models.Sequelize.fn("COUNT", models.Sequelize.col("requests.id")), "requestCount"]]
-//             },
-//             include: [
-//                 {
-//                     model: models.user,
-//                     attributes: {
-//                         exclude: ['password']
-//                     }
-//                 },
-//                 {
-//                     model: models.request,
-//                     attributes: []
-//                 }
-//             ],
-          
-
-//         });
-//         resp=resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
-//         res.send(resp);
-//     }
-    
-//     catch (err) {
-//         //bad request
-//         console.log(err);
-//         res.status(400).send({
-//             result: false,
-//             msg: err.toString()
-//         });
-//     }
-// }
-
 module.exports = {    
-    getRecruits
-    //getRecruits_pagination
+    getRecruits_pagination
 };
