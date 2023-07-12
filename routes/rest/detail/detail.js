@@ -2,17 +2,21 @@ const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
 
-async function getMain(req, res) {
+async function getDetail(req, res) {
     try {
+        const postId = req.params;
+        const id = Number(postId.postId);
+
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['company_name', 'company_logo','description_title',
-                 'is_visa_sponsored','is_remoted','location', 'posted_date',
+                ['recruit_id', 'company_name', 'company_logo','description_title', 'description_content',
+                 'company_apply_link', 'salary', 'contract_form', 'tag', 'origin', 'posted_date', 
+                 'location', 'is_visa_sponsored','is_remoted', 'is_dev',
             ],
-            limit: 6,
-            order: [
-                ['posted_date', 'DESC']
-            ],
+            where: {
+                recruit_id: id,
+            },
+            limit: 1,
             include: [
                 {
                     model: models.nation,
@@ -28,7 +32,6 @@ async function getMain(req, res) {
         res.send([{
             Message: "Success", 
             ResultCode: "ERR_OK",            
-            Size: 6,
             Response: resp
         }])
     }
@@ -42,5 +45,5 @@ async function getMain(req, res) {
 }
 
 module.exports = {    
-    getMain
+    getDetail
 };
