@@ -5,14 +5,30 @@ const app = require('../../../app');
 async function getRecruits(req, res) {
     try {
         const pid = req.params.page;
+        //const keyword = req.query.keyword;
+        //const location = req.query.location;
+        const query_remote = req.query.remote;
+        const query_visa = req.query.visa;
+        let remote = 0;
+        let visa = 0;
+        let nation = 0;
 
+        if (query_remote=="true") {
+            remote = 1;
+        }
+        if (query_visa=="true") {
+            visa = 1;
+        }
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['recruit_id','nation_id','company_name','company_city','description_title','description_content','company_apply_link',
-                'posted_date','is_visa_sponsored','is_remoted','company_logo','salary','contract_form',
-                'company_page_link','origin','tag','location','is_dev','created_at','created_by',
-                'updated_at','updated_by'
-            ],        
+                ['recruit_id','nation_id','company_name','description_title','description_content',
+                'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
+            ],    
+            where:{                
+                nation_id: nation,
+                is_remoted: remote,
+                is_visa_sponsored: visa
+            },
             order: [
                 ['posted_date', 'DESC']
             ],
