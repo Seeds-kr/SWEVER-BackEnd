@@ -4,8 +4,7 @@ const app = require('../../../app');
 
 async function getDetail(req, res) {
     try {
-        const postId = req.params;
-        const id = Number(postId.postId);
+        const postId = Number(req.params.postId);
 
         const resp = await models.recruit_post.findAll({
             attributes: 
@@ -14,7 +13,7 @@ async function getDetail(req, res) {
                  'location', 'is_visa_sponsored','is_remoted', 'is_dev',
             ],
             where: {
-                recruit_id: id,
+                recruit_id: postId,
             },
             limit: 1,
             include: [
@@ -29,6 +28,7 @@ async function getDetail(req, res) {
                 }
             ]
         });
+    
         res.send([{
             Message: "Success", 
             ResultCode: "ERR_OK",            
