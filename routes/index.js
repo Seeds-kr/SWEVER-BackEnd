@@ -8,8 +8,8 @@ const options={
     optionSuccessStatus: 200
 };
 
-router.use('/rest', require('./rest'));
 router.use(cors(options));
+router.use('/rest', require('./rest'));
 // router.get('/rest/join', renderJoin);
 // router.get('/rest/profile', renderProfile);
 
