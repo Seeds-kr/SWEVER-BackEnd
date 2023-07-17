@@ -11,10 +11,15 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: false,
             comment: '사용자 이름'
         },
+        user_password: {
+            type:DataTypes.STRING(100),
+            allowNull: false,
+            comment: '사용자 비밀번호'
+        },
         user_provider: {
             type: DataTypes.ENUM('local', 'gmail'),
             allowNull: false,
-            defaultvalue: 'local',
+            defaultValue: 'local',
             comment: '가입 방식'
         },
         user_snsId: {
