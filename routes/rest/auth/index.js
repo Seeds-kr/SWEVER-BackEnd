@@ -16,4 +16,14 @@ router.post('/login', isNotLoggedIn, login);
 // GET /auth/logout
 router.get('/logout', isLoggedIn, logout);
 
+// /auth/kakao
+router.get('/kakao', passport.authenticate('kakao'));
+
+// /auth/kakao/callback
+router.get('/kakao/callback', passport.authenticate('kakao', {
+    failureRedirect: '/'
+}), (req, res) => {
+    res.send({ message: '카카오 로그인 성공 '});
+});
+
 module.exports = router;
