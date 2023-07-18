@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes)=>{
             comment: '사용자 이름'
         },
         user_password: {
-            type:DataTypes.STRING(100),
-            allowNull: false,
+            type:DataTypes.STRING(255),
+            allowNull: true,
             comment: '사용자 비밀번호'
         },
         user_provider: {
-            type: DataTypes.ENUM('local', 'gmail'),
+            type: DataTypes.ENUM('local', 'gmail', 'kakao'),
             allowNull: false,
             defaultValue: 'local',
             comment: '가입 방식'
