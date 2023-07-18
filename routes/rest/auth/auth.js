@@ -2,6 +2,7 @@ const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
 const bcrypt = require('bcrypt');
+const passport = require('passport')
 
 exports.join = async (req, res, next) => {
     const { email, name, password } = req.body;
@@ -28,3 +29,28 @@ exports.join = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.login = (req, res, next) => {
+    passport.authenticate('local', (authError, user, info) => {
+        if (authError) { // 서버 실패
+            console.error(authError);
+            return next(authError);
+        }
+        if (!user) { // 로직 실패
+            return res.send({ message: '로직 실패' });
+        }
+        return req.login(user, (loginError) => { // 로그인 성공
+            if (loginError) {
+                console.error(loginError);
+                return next(loginError);
+            }
+            return res.send({ message: '로그인 성공' });
+        })
+    })(req, res, next);
+};
+
+exports.logout = (req, res, next) => {
+    req.logout(() => {
+        res.send({ message: '로그아웃 성공' });
+    });
+};

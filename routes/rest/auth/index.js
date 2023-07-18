@@ -4,15 +4,16 @@ const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
 const { join, join2, login, logout } = require('./auth');
 const router = express.Router();
 
-// router.use((req, res, next) => {
-//     res.locals.user = req.user;
-// })
+router.use((req, res, next) => {
+    res.locals.user = req.user;
+    next();
+})
 
 // POST /auth/join 
 router.post('/join', isNotLoggedIn, join);
 // POST /auth/login
-// router.post('/login', isNotLoggedIn, login);
-// // GET /auth/logout
-// router.get('/logout', isLoggedIn, logout);
+router.post('/login', isNotLoggedIn, login);
+// GET /auth/logout
+router.get('/logout', isLoggedIn, logout);
 
 module.exports = router;
