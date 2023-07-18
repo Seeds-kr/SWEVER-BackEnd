@@ -13,7 +13,7 @@ async function getReviews_pagination(req, res) {
             attributes: 
                 ['review_id','title','link','thumbnail','created_at'],    
             order: [
-                ['created_at', 'DESC']
+                ['review_id', 'DESC']
             ]
         });
         resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
