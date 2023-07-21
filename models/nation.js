@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     nation.associate = (models)=> {
-        nation.hasMany(models.recruit_post, {foreignKey: 'nation_id'});
+        nation.hasMany(models.recruit_post, {foreignKey: 'nation_id',sourceKey:'nation_id'});
     }
     return nation;
 };

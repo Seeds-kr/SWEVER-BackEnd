@@ -6,12 +6,10 @@ const { Op } = require('sequelize');
 async function getRecruits_pagination(req, res) {    
     const pageNum = req.params.page;
     const query_keyword = req.query.keyword;
-    //const query_nation = req.query.nation;
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
     let remote = 0;
     let visa = 0;
-    let nation = 0;
     let keyword='';
 
     if (query_remote=="true") {
@@ -33,8 +31,7 @@ async function getRecruits_pagination(req, res) {
                 ['recruit_id','nation_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
             ],    
-            where:{                
-                nation_id: nation,
+            where:{
                 is_remoted: remote,
                 is_visa_sponsored: visa,
                 description_title: {
@@ -49,9 +46,9 @@ async function getRecruits_pagination(req, res) {
             ],
             include: [
                 {
-                    model: models.nation,
-                    attributes: []
-                    
+                    model: models.nation, 
+                    attributes: ['nation_name'],
+                    as: 'nation'
                 },                
                 {
                     model: models.description_tech,
