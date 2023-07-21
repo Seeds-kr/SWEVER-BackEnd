@@ -1,16 +1,18 @@
 const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
+const { Op } = require('sequelize');
 
 async function getRecruits_pagination(req, res) {    
     const pageNum = req.params.page;
-    //const keyword = req.query.keyword;
+    const query_keyword = req.query.keyword;
     //const query_nation = req.query.nation;
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
     let remote = 0;
     let visa = 0;
     let nation = 0;
+    let keyword='';
 
     if (query_remote=="true") {
         remote = 1;
@@ -18,6 +20,10 @@ async function getRecruits_pagination(req, res) {
     if (query_visa=="true") {
         visa = 1;
     }
+    if (query_keyword){
+        keyword = query_keyword;
+    }
+
     const limit = 10;
     const offset = limit * (parseInt(pageNum) - 1);
     try {
@@ -30,7 +36,13 @@ async function getRecruits_pagination(req, res) {
             where:{                
                 nation_id: nation,
                 is_remoted: remote,
-                is_visa_sponsored: visa
+                is_visa_sponsored: visa,
+                description_title: {
+                    [Op.like]: `%${keyword}%`,
+                },
+                description_content:{
+                    [Op.like]: `%${keyword}%`,
+                }
             },
             order: [
                 ['posted_date', 'DESC']
