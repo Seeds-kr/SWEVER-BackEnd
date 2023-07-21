@@ -46,10 +46,9 @@ async function getRecruits_pagination(req, res) {
             ],
             include: [
                 {
-                    model: models.nation, 
-                    attributes: ['nation_name'],
-                    as: 'nation'
-                },                
+                    model: models.nation,
+                    attributes: ['nation_name']
+                },
                 {
                     model: models.description_tech,
                     attributes: []                    
