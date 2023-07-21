@@ -28,7 +28,7 @@ async function getRecruits_pagination(req, res) {
         let resp = await models.recruit_post.findAll({
             group: ['recruit_id'],
             attributes: 
-                ['recruit_id','nation_id','company_name','description_title','description_content',
+                ['recruit_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
             ],    
             where:{
@@ -51,7 +51,11 @@ async function getRecruits_pagination(req, res) {
                 },
                 {
                     model: models.description_tech,
-                    attributes: []                    
+                    attributes: ['']                    
+                },
+                {
+                    model: models.tech_stack,
+                    attributes: ['']             
                 }
             ]
         });
