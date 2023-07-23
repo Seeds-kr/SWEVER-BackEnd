@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes)=>{
         nation_id:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: '국가 고유번호'
+            comment: '국가 고유번호',           
+            autoIncrement: true,
+            primaryKey: true
         },
         nation_name:{
             type: DataTypes.STRING,

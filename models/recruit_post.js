@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes)=>{
         recruit_id:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: '채용공고 고유번호',
+            comment: '채용공고 고유번호',            
+            autoIncrement: true,
             primaryKey: true
         },
         nation_id:{

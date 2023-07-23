@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes)=>{
         review_id:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: '리뷰 고유번호',
+            comment: '리뷰 고유번호',            
+            autoIncrement: true,
             primaryKey: true
         },
         title:{

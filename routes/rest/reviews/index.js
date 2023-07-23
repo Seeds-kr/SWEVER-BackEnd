@@ -2,18 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getReviews_pagination    
+    getReviews_pagination  ,
+    upsertReview  
 } = require('./review.js');
 
 router.get('/:page', getReviews_pagination);
-
-router.post('/', (req, res)=>{
-    res.status(405).send([{
-            Message: "Method not allowed", 
-            ResultCode: "ERR_INVALID_DATA"            
-        }]);
-    return res;
-});
+router.post('/', upsertReview);
 
 router.use((req, res, next) => {
     res.status(400).send([{
