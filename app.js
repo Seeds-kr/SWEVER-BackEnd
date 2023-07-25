@@ -4,7 +4,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
+const dotenv = require('dotenv');
+const passport = require('passport');
 
+dotenv.config(); // process.env
+
+const passportConfig = require('./passport');
 const sequelize = require('./models').sequelize;
 const config = require('./config/config.json')[process.env.NODE_ENV || 'development'];
 // const viewPath = config.path;
@@ -15,6 +20,7 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
 sequelize.sync();
+passportConfig();
 
 // if(process.env.NODE_ENV === 'production') {
 //   app.use('/', express.static(path.join(__dirname, viewPath.index)));
@@ -30,6 +36,23 @@ const sessionStore = new MySQLStore({
   database: config.db.database
 });
 
+app.use(logger('dev'));
+app.use(express.json()); // req.body를 ajax json 요청으로 부터
+app.use(express.urlencoded({ extended: false })); // req.body 폼으로 부터 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false, // http 적용할 때 ture로 바꾸기
+  }
+}));
+app.use(passport.initialize()); // req.use, req.login, req.isAuthenticate, req.logout
+app.use(passport.session()); // connect.sid라는 이름으로 세션 쿠키가 브라우저로 전송 
+
 app.use(compression());
 
 app.use('/', require('./routes'));
@@ -42,12 +65,6 @@ app.use(history());
 app.set('views', path.join(__dirname, 'views'));
 console.log(2);
 app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 console.log(3);
 // catch 404 and forward to error handler

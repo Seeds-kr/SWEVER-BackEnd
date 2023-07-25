@@ -39,12 +39,7 @@ async function getRecruits_pagination(req, res) {
                 {
                     model: models.nation,
                     attributes: []
-                    
                 },                
-                {
-                    model: models.description_tech,
-                    attributes: []                    
-                }
             ]
         });
         resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
