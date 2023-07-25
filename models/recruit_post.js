@@ -120,9 +120,9 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     recruit_post.associate = (models)=> {
-        recruit_post.hasMany(models.description_tech, {foreignKey: 'recruit_id', sourceKey:'id'});
-        recruit_post.belongsTo(models.user, {foreignKey: 'creator_id', targetKey:'id'});
-        recruit_post.belongsTo(models.nation, {foreignKey: 'nation_id', targetKey:'id'});
+        recruit_post.belongsToMany(models.tech_stack, { through: 'description_tech' });
+        recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
+        recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id', targetKey:'id' });
     }
     return recruit_post;
 };
