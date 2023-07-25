@@ -8,6 +8,7 @@ const options={
     optionSuccessStatus: 200
 };
 
+<<<<<<< HEAD
 router.use((req, res, next) => {
     res.locals.user = req.user;
     next();
@@ -15,6 +16,11 @@ router.use((req, res, next) => {
 
 router.use(cors(options));
 router.use('/rest', require('./rest'));
+=======
+router.use(cors(options));
+router.use('/rest', require('./rest/'));
+
+>>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
 // router.get('/rest/join', renderJoin);
 // router.get('/rest/profile', renderProfile);
 

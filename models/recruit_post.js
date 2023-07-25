@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes)=>{
         id:{
             type: DataTypes.INTEGER,
             allowNull: false,
+<<<<<<< HEAD
             autoIncrement: true,
             primaryKey: true,
             comment: '채용공고 고유번호'
@@ -14,6 +15,11 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: false,
             defaultValue: 0,
             comment: '생성자 고유번호'
+=======
+            comment: '채용공고 고유번호',            
+            autoIncrement: true,
+            primaryKey: true
+>>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
         },
         nation_id:{
             type: DataTypes.INTEGER,
