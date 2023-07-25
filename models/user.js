@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes)=>{
     // Foreign keys
     user.associate = (models)=> {
         user.hasMany(models.recruit_post, { foreignKey: 'creator_id', sourceKey: 'id' });
-        // user.hasMany(models.review, { foreignKey: 'creator_id', sourceKey: 'id' }); - review talbe과의 관계 
+        user.hasMany(models.review, { foreignKey: 'creator_id', sourceKey: 'id' });
     }
 
     return user;

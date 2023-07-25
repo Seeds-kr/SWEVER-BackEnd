@@ -20,5 +20,6 @@ module.exports = (sequelize, DataTypes)=>{
     tech_stack.associate = (models)=> {
         tech_stack.belongsToMany(models.recruit_post, { through: 'description_tech' });
     }
+    
     return tech_stack;
 };
