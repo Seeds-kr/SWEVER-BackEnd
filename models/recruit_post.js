@@ -2,11 +2,16 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const recruit_post = sequelize.define('recruit_post',{
-        recruit_id:{
+        id:{
+            primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: '채용공고 고유번호',
-            primaryKey: true
+            comment: '채용공고 고유번호'
+        },
+        creator_id:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: '생성자 고유번호'
         },
         nation_id:{
             type: DataTypes.INTEGER,
@@ -17,11 +22,6 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.STRING,
             allowNull: false,
             comment: '회사 이름'
-        },
-        company_city:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '회사 도시 이름'
         },
         description_title:{
             type: DataTypes.STRING,
@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes)=>{
         contract_form:{
             type: DataTypes.STRING,
             allowNull: true,
-            comment: '채용 형태' // ??
+            comment: '채용 형태'
         },
         company_page_link:{
             type: DataTypes.STRING,
@@ -111,11 +111,6 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.DATE,
             allowNull: true,
             comment: '데이터 수정 날짜'
-        },
-        updated_by:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            comment: '데이터 수정자 이름'
         }
     },{
         tableName: 'recruit_post',
@@ -125,8 +120,9 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     recruit_post.associate = (models)=> {
-        recruit_post.belongsTo(models.nation, {foreignKey: 'nation_id', targetKey:'nation_id'});
-        recruit_post.hasMany(models.description_tech, {foreignKey: 'recruit_id',sourceKey:'recruit_id'});
+        recruit_post.hasMany(models.description_tech, {foreignKey: 'recruit_id', sourceKey:'id'});
+        recruit_post.belongsTo(models.user, {foreignKey: 'creator_id', targetKey:'id'});
+        recruit_post.belongsTo(models.nation, {foreignKey: 'nation_id', targetKey:'id'});
     }
     return recruit_post;
 };

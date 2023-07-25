@@ -1,14 +1,15 @@
 module.exports = (sequelize, DataTypes)=>{
     const tech_stack=  sequelize.define('tech_stack',{
-        tech_id:{
+        id:{
+            primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: '기술 스택 고유번호'
         },
-        recruit_id:{
-            type: DataTypes.INTEGER,
+        tech_name:{
+            type: DataTypes.STRING,
             allowNull: false,
-            comment: '채용공고 고유번호'
+            comment: '기술 스택 이름'
         }
     }, {
       tableName: 'tech_stack',
@@ -17,8 +18,7 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     tech_stack.associate = (models)=> {
-        tech_stack.belongsTo(models.recruit_post, {foreignKey: 'recruit_id'});
-        tech_stack.belongsTo(models.tech_stack, {foreignKey: 'tech_id'});
+        tech_stack.hasMany(models.tech_stack, { foreignKey: 'tech_id', targetKey: 'id' });
     }
     return tech_stack;
 };

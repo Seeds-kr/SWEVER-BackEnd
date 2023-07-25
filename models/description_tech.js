@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     description_tech.associate = (models)=> {
-        description_tech.belongsTo(models.recruit_post, {foreignKey: 'recruit_id'});
-        description_tech.belongsTo(models.tech_stack, {foreignKey: 'tech_id'});
+        description_tech.belongsTo(models.recruit_post, { foreignKey: 'recruit_id', targetKey: 'id' });
+        description_tech.belongsTo(models.tech_stack, { foreignKey: 'tech_id', targetKey: 'id' });
     }
     return description_tech;
 };

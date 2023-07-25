@@ -36,5 +36,10 @@ module.exports = (sequelize, DataTypes)=>{
         paranoid: true, // deletedAt 유저 삭제일 - soft delete
     });
 
+    user.associate = (models)=> {
+        user.hasMany(models.recruit_post, { foreignKey: 'creator_id', sourceKey: 'id' });
+        // user.hasMany(models.review, { foreignKey: 'creator_id', sourceKey: 'id' }); - review talbe과의 관계 
+    }
+
     return user;
 };
