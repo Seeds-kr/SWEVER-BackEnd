@@ -5,21 +5,22 @@ const { Op } = require('sequelize');
 
 async function getRecruits_pagination(req, res) {    
     const pageNum = req.params.page;
-    const query_keyword = req.query.keyword;
+    const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
-    let remote = 0;
-    let visa = 0;
+    const whereCondition = {};    
     let keyword='';
 
-    if (query_remote=="true") {
-        remote = 1;
+    if (query_remote == "true" || query_remote == "false") {
+        whereCondition.is_remoted = query_remote === "true" ? 1 : 0;
     }
-    if (query_visa=="true") {
-        visa = 1;
+    if (query_visa == "true" || query_visa == "false") {
+        whereCondition.is_visa_sponsored = query_visa === "true" ? 1 : 0;
     }
     if (query_keyword){
-        keyword = query_keyword;
+        whereCondition.description_title = {
+            [Op.like]: `%${query_keyword}%`
+        }
     }
 
     const limit = 10;
@@ -31,16 +32,8 @@ async function getRecruits_pagination(req, res) {
                 ['recruit_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
             ],    
-            where:{
-                is_remoted: remote,
-                is_visa_sponsored: visa,
-                description_title: {
-                    [Op.like]: `%${keyword}%`,
-                },
-                description_content:{
-                    [Op.like]: `%${keyword}%`,
-                }
-            },
+            where:
+                [whereCondition],            
             order: [
                 ['posted_date', 'DESC']
             ],
@@ -52,10 +45,6 @@ async function getRecruits_pagination(req, res) {
                 {
                     model: models.description_tech,
                     attributes: ['']                    
-                },
-                {
-                    model: models.tech_stack,
-                    attributes: ['']             
                 }
             ]
         });
