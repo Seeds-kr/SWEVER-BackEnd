@@ -27,9 +27,13 @@ async function getRecruits_pagination(req, res) {
     const offset = limit * (parseInt(pageNum) - 1);
     try {
         let resp = await models.recruit_post.findAll({
-            group: ['recruit_id'],
+            group: ['id'],
             attributes: 
+<<<<<<< HEAD
                 ['recruit_id','company_name','description_title','description_content',
+=======
+                ['id','nation_id','company_name','description_title','description_content',
+>>>>>>> a9e0e30c126015cae0623c40bdbb5de4eb59672d
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
             ],    
             where:
@@ -41,10 +45,6 @@ async function getRecruits_pagination(req, res) {
                 {
                     model: models.nation,
                     attributes: ['nation_name']
-                },
-                {
-                    model: models.description_tech,
-                    attributes: ['']                    
                 }
             ]
         });
