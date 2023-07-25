@@ -3,14 +3,16 @@ const Sequelize = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
     const recruit_post = sequelize.define('recruit_post',{
         id:{
-            primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
             comment: '채용공고 고유번호'
         },
         creator_id:{
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
             comment: '생성자 고유번호'
         },
         nation_id:{
@@ -102,11 +104,6 @@ module.exports = (sequelize, DataTypes)=>{
             defaultValue: Sequelize.NOW(),
             comment: '데이터 삽입 날짜'
         },
-        created_by:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '데이터 삽입자 이름'
-        },
         updated_at:{
             type: DataTypes.DATE,
             allowNull: true,
@@ -120,9 +117,10 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     recruit_post.associate = (models)=> {
-        recruit_post.belongsToMany(models.tech_stack, { through: 'description_tech' });
+        recruit_post.belongsToMany(models.tech_stack, { through: 'description_tech', foreignKey: 'recruit_id', otherKey: 'tech_id' });
         recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
         recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id', targetKey:'id' });
     }
+
     return recruit_post;
 };

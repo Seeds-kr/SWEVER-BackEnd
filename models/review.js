@@ -2,16 +2,17 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const review = sequelize.define('review',{
-        review_id:{
+        id:{
             type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '리뷰 고유번호',            
+            allowNull: false,       
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
+            comment: '리뷰 고유번호',     
         },
         creator_id:{
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
             comment: '생성자 고유번호'
         },
         title:{
@@ -36,21 +37,11 @@ module.exports = (sequelize, DataTypes)=>{
             defaultValue: Sequelize.NOW(),
             comment: '데이터 삽입 날짜'
         },
-        created_by:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '데이터 삽입자 이름'
-        },
         updated_at:{
             type: DataTypes.DATE,
             allowNull: true,
             comment: '데이터 수정 날짜'
         },
-        updated_by:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            comment: '데이터 수정자 이름'
-        }
     },{
         tableName: 'review',
         comment: '해외 취업 후기',

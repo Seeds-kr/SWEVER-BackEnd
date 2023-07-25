@@ -1,9 +1,12 @@
+const Sequelize = require('sequelize');
+
 module.exports = (sequelize, DataTypes)=>{
     const tech_stack=  sequelize.define('tech_stack',{
         id:{
-            primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
             comment: '기술 스택 고유번호'
         },
         tech_name:{
@@ -13,13 +16,14 @@ module.exports = (sequelize, DataTypes)=>{
         }
     }, {
       tableName: 'tech_stack',
-      comment: '기술 스택'
+      comment: '기술 스택',
+      timestamps: false
     });
 
     // Foreign keys
     tech_stack.associate = (models)=> {
-        tech_stack.belongsToMany(models.recruit_post, { through: 'description_tech' });
+        tech_stack.belongsToMany(models.recruit_post, { through: 'description_tech', foreignKey: 'tech_id', otherKey: 'recruit_id' });
     }
-    
+
     return tech_stack;
 };

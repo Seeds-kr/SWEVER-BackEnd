@@ -1,6 +1,7 @@
 const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
+const tech_stack = require('../../../models/tech_stack');
 
 async function getMain(req, res) {
     try {
@@ -20,11 +21,16 @@ async function getMain(req, res) {
                     
                 },                
                 {
-                    model: models.description_tech,
-                    attributes: []                    
+                    model: models.tech_stack,
+                    through: {
+                        attributes: []  // 중간 테이블에서 가져올 속성 지정
+                    },
+                    attributes: [] // tech_stack에서 가져올 속성 지정                    
                 }
             ]
         });
+
+        
         res.send([{
             Message: "Success", 
             ResultCode: "ERR_OK",            

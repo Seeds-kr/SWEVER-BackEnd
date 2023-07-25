@@ -8,12 +8,12 @@ async function getDetail(req, res) {
 
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['recruit_id', 'company_name', 'company_logo','description_title', 'description_content',
+                ['id', 'company_name', 'company_logo','description_title', 'description_content',
                  'company_apply_link', 'salary', 'contract_form', 'tag', 'origin', 'posted_date', 
                  'location', 'is_visa_sponsored','is_remoted', 'is_dev',
             ],
             where: {
-                recruit_id: postId,
+                id: postId,
             },
             limit: 1,
             include: [
@@ -23,8 +23,11 @@ async function getDetail(req, res) {
                     
                 },                
                 {
-                    model: models.description_tech,
-                    attributes: []                    
+                    model: models.tech_stack,
+                    through: {
+                        attributes: []  // 중간 테이블에서 가져올 속성 지정
+                    },
+                    attributes: ['tech_name'] // tech_stack에서 가져올 속성 지정                    
                 }
             ]
         });
