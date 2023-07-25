@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     review.associate = (models)=> {
-        recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
+        review.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
     }
     
     return review;
