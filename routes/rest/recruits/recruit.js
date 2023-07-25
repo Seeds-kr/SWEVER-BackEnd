@@ -22,9 +22,9 @@ async function getRecruits_pagination(req, res) {
     const offset = limit * (parseInt(pageNum) - 1);
     try {
         let resp = await models.recruit_post.findAll({
-            group: ['recruit_id'],
+            group: ['id'],
             attributes: 
-                ['recruit_id','nation_id','company_name','description_title','description_content',
+                ['id','nation_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
             ],    
             where:{                
