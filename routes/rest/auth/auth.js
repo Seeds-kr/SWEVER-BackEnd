@@ -43,10 +43,18 @@ exports.login = (req, res, next) => {
             }]);
         }
         if (!user) { // 로직 실패
-            return res.send([{
-                Message: "존재하지 않는 회원입니다.", 
-                ResultCode: "User_NotExist"
-            }])
+            console.log(info.code)
+            if (info.code == 1) {
+                return res.send([{
+                    Message: "비밀번호가 일치하지 않습니다.", 
+                    ResultCode: "Wrong_Password"
+                }]);
+            } else if (info.code == 2) {
+                return res.send([{
+                    Message: "존재하지 않는 회원입니다.", 
+                    ResultCode: "User_NotExist"
+                }]);
+            }
         }
         return req.login(user, (loginError) => { // 로그인 성공
             if (loginError) {
