@@ -11,8 +11,27 @@ router.use((req, res, next) => {
 
 // POST /auth/join 
 router.post('/join', isNotLoggedIn, join);
+
+router.get('/join', (req, res)=>{
+    res.status(405).send([{
+            Message: "Method not allowed", 
+            ResultCode: "ERR_INVALID_DATA"            
+        }]);
+    return res;
+});
+
 // POST /auth/login
 router.post('/login', isNotLoggedIn, login);
+
+router.get('/login', (req, res)=>{
+    res.status(405).send([{
+            Message: "Method not allowed", 
+            ResultCode: "ERR_INVALID_DATA"            
+        }]);
+    return res;
+});
+
+
 // GET /auth/logout
 router.get('/logout', isLoggedIn, logout);
 
@@ -23,7 +42,10 @@ router.get('/kakao', passport.authenticate('kakao'));
 router.get('/kakao/callback', passport.authenticate('kakao', {
     failureRedirect: '/'
 }), (req, res) => {
-    res.send({ message: '카카오 로그인 성공 '});
+    res.send([{
+        Message: "카카오톡 로그인이 완료되었습니다.", 
+        ResultCode: "Kakao_Login_Success"
+    }])
 });
 
 module.exports = router;

@@ -25,8 +25,11 @@ exports.join = async (req, res, next) => {
             ResultCode: "Signin_Success", 
         }])
     } catch (error) {
-        console.error(error);
-        next(error);
+        console.log(error);        
+        res.status(500).send([{            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        }]);
     }
 }
 
@@ -34,23 +37,35 @@ exports.login = (req, res, next) => {
     passport.authenticate('local', (authError, user, info) => {
         if (authError) { // 서버 실패
             console.error(authError);
-            return next(authError);
+            return res.status(500).send([{            
+                Message: "Internal server error", 
+                ResultCode: "ERR_INTERNAL_SERVER"
+            }]);
         }
         if (!user) { // 로직 실패
-            return res.send({ message: '로직 실패' });
+            return res.send([{
+                Message: "존재하지 않는 회원입니다.", 
+                ResultCode: "User_NotExist"
+            }])
         }
         return req.login(user, (loginError) => { // 로그인 성공
             if (loginError) {
                 console.error(loginError);
                 return next(loginError);
             }
-            return res.send({ message: '로그인 성공' });
+            return res.send([{
+                Message: "로그인이 완료되었습니다.", 
+                ResultCode: "Login_Success"
+            }])
         })
     })(req, res, next);
 };
 
 exports.logout = (req, res, next) => {
     req.logout(() => {
-        res.send({ message: '로그아웃 성공' });
+        res.send([{
+            Message: "로그아웃이 완료되었습니다.", 
+            ResultCode: "Logout_Success", 
+        }])
     });
 };
