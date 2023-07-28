@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
-const { join, join2, login, logout } = require('./auth');
+const { join, login, logout } = require('./auth');
 const router = express.Router();
 
 router.use((req, res, next) => {

@@ -9,7 +9,7 @@ exports.join = async (req, res, next) => {
     try {
         const exUser = await models.user.findOne({ where: { user_email: email }});
         if (exUser) {
-            res.send([{
+            return res.send([{
                 Message: "이미 존재하는 이메일입니다.", 
                 ResultCode: "Email_Exists", 
             }])
@@ -20,7 +20,7 @@ exports.join = async (req, res, next) => {
             user_name: name,
             user_password: hash,
         })
-        res.send([{
+        return res.send([{
             Message: "회원가입이 완료되었습니다.", 
             ResultCode: "Signin_Success", 
         }])

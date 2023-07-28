@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes)=>{
             comment: '원격 근무 여부'
         },
         company_logo:{
-            type: DataTypes.BLOB('medium'),
+            type: DataTypes.STRING,
             allowNull: true,
             comment: '회사 로고'
         },
