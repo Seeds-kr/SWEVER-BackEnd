@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.STRING,
             comment: '미리보기 글'
         },
-        css_thumbnail:{
+        thumbnail:{
             type: DataTypes.STRING,
             comment: '썸네일'
         },
