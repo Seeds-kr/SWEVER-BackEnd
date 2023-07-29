@@ -10,6 +10,10 @@ const options={
 
 router.use((req, res, next) => {
     res.locals.user = req.user;
+    req.session;
+    console.log(req.session);
+    console.log(1213);
+    console.log(req.user);
     next();
 })
 
