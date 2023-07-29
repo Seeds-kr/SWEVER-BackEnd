@@ -1,43 +1,37 @@
 const models = require('../../../models');
-const sha256 = require('sha256');
-const app = require('../../../app');
-
-exports.afterUploadImage = (req, res) => {
-    console.log(req.file);
-    res.json({ url: `/img/${ req.file.filename }` });
-};
 
 exports.uploadPost = async (req, res, next) => {
     // req.body.content, req.body.url
     try {
         console.log(req);
-        console.log(4325245345);
-        console.log(req.body);
         const post = await models.recruit_post.create({
             creator_id: req.user.id,
-            nation_id: 1,
-            company_name: "test",
-            description_title: "test",
-            description_content: "test",
-            company_apply_link: "test",
-            posted_date: 1234,
-            is_visa_sponsored: 1,
-            is_remoted: 1,
-            is_dev: 1,
-            company_logo: null,
-            salary: null,
-            contract_form: null,
-            company_page_link: null,
+            nation_id: req.body.nation_id,
+            company_name: req.body.company_name,
+            description_title: req.body.description_title,
+            description_content: req.body.description_content,
+            company_apply_link: req.body.company_apply_link,
+            posted_date: Math.floor(Date.now() / 1000),
+            is_visa_sponsored: req.body.is_visa_sponsored,
+            is_remoted: req.body.is_remoted,
+            is_dev: req.body.is_dev,
+            company_logo: `${req.file.filename}`,
+            salary: req.body.salary,
+            contract_form: req.body.contract_form,
+            company_page_link: req.body.company_apply_link,
             origin: "fndr",
-            tag: null,
-            location: "test"
+            tag: req.body.tag,
+            location: req.body.location
         })
         return res.send([{
             Message: "채용공고 등록이 완료되었습니다.", 
             ResultCode: "JobPost_Create_Success", 
         }])
-    } catch (error) {
-        console.log(error);
-        next(error);
+    } catch (err) {
+        console.log(err);        
+        res.status(500).send([{            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        }]);
     }
 };
