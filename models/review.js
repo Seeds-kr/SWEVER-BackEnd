@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const review = sequelize.define('review',{
-<<<<<<< HEAD
         id:{
             type: DataTypes.INTEGER,
             allowNull: false,       
@@ -15,14 +14,6 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: false,
             defaultValue: 0,
             comment: '생성자 고유번호'
-=======
-        review_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '리뷰 고유번호',            
-            autoIncrement: true,
-            primaryKey: true
->>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
         },
         title:{
             type: DataTypes.STRING,
@@ -36,7 +27,7 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.STRING,
             comment: '미리보기 글'
         },
-        css_thumbnail:{
+        thumbnail:{
             type: DataTypes.STRING,
             comment: '썸네일'
         },
@@ -46,40 +37,30 @@ module.exports = (sequelize, DataTypes)=>{
             defaultValue: Sequelize.NOW(),
             comment: '데이터 삽입 날짜'
         },
-<<<<<<< HEAD
-=======
-        created_by:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '데이터 삽입자 이름'
-        },
->>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
         updated_at:{
             type: DataTypes.DATE,
             allowNull: true,
             comment: '데이터 수정 날짜'
         },
-<<<<<<< HEAD
-=======
-        updated_by:{
+        google_api:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            comment: '구글 api 인지 사용자 직접 입력인지',
+            defaultValue: 1
+        },
+        content:{
             type: DataTypes.STRING,
             allowNull: true,
-            comment: '데이터 수정자 이름'
+            comment: '리뷰 내용'            
         }
->>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
     },{
         tableName: 'review',
         comment: '해외 취업 후기',
         timestamps: false,
     });
-<<<<<<< HEAD
-
     // Foreign keys
     review.associate = (models)=> {
         review.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
     }
-    
-=======
->>>>>>> edd45f230cb888743dbde3d1833e13aee66dcd6e
     return review;
 };

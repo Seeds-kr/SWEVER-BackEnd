@@ -9,9 +9,9 @@ async function getReviews_pagination(req, res) {
   const offset = limit * (parseInt(pageNum) - 1);
   try {
     let resp = await models.review.findAll({
-      group: ["review_id"],
-      attributes: ["review_id", "title", "link", "thumbnail", "created_at"],
-      order: [["review_id", "DESC"]],
+      group: ["id"],
+      attributes: ["id", "title", "link", "thumbnail", "created_at"],
+      order: [["id", "DESC"]],
     });
     resp = resp.filter(
       (app, idx) => offset <= idx && idx <= offset + limit - 1
@@ -37,53 +37,47 @@ async function getReviews_pagination(req, res) {
 
 async function upsertReview(req, res) {
   try {
-    const review = await models.review.findOne({
-      where: {
-        review_id: req.body.rid
-      }
-    });
-    console.log(review);
-    if (!review) {
-      await models.review.create({
-        //review_id: req.body.rid,
-        title: req.body.title,
-        link: req.body.link,
-        created_at: now(),
-        create_by: req.body.user,
-        thumbnail: req.body.thumbnail,
-        snippet: req.body.snippet,
-      });
-    } else {
-      await models.review.update(
-        {
-          title: req.body.title,
-          link: req.body.link,
-          updated_at: now(),
-          updated_by: req.body.user,
-          thumbnail: req.body.thumbnail,
-          snippet: req.body.snippet,
-        },
-        {
-          where: {
-            review_id: req.body.rid
-          },
-        }
-      );
+    await models.review.upsert({
+      id: req.body.id,
+      title: req.body.title,         
+      creator_id: req.user.id,
+      thumbnail: req.body.thumbnail,
+      snippet: req.body.snippet,
+      updated_at: Date.now(),
+      content: req.body.content,
+      google_api:"0"
+    });      
+    res.send([
+    {
+      Message: "SUCCESS",
+      ResultCode: "ERR_OK",          
+    }]);
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send([
+      {
+        Message: "Internal server error",
+        ResultCode: "ERR_INTERNAL_SERVER",
+      },
+    ]);
+  }
+}
 
-    //   req.session.user = await models.user.findOne({
-    //     where: {
-    //       user_id: req.body.uid,
-    //     },
-    //     attributes: ["user_id", "name"],
-    //   });
-      res.send([
-        {
-          Message: "Success",
-          ResultCode: "ERR_OK",          
-        },
-      ]);
-    }
-  } catch (err) {
+async function deleteReview(req, res) {
+  try {
+    await models.review.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.send([
+    {
+      Message: "SUCCESS",
+      ResultCode: "ERR_OK",          
+    }]);
+  }
+  catch (err) {
     console.log(err);
     res.status(500).send([
       {
@@ -97,4 +91,5 @@ async function upsertReview(req, res) {
 module.exports = {
   getReviews_pagination,
   upsertReview,
+  deleteReview
 };
