@@ -44,6 +44,13 @@ exports.updatePost = async (req, res, next) => {
         if(req.file) {
             updateData.company_logo = req.file.path;
         }
+        const find_post = await models.recruit_post.findOne({ where: { id: postId } });
+        if (!post) {
+            return res.status(404).json({
+                Message: "존재하지 않는 채용공고입니다.",
+                ResultCode: "JobPost_Not_Exist",
+            });
+        }
         const updatePost = await models.recruit_post.update(updateData, {
             where: { id: postId },
         }); // 수정된 사항이 있다면 updatePost[1] == 1 없다면 0
@@ -57,6 +64,47 @@ exports.updatePost = async (req, res, next) => {
             return res.status(200).json({
                 Message: "채용공고 수정이 완료되었습니다.",
                 ResultCode: "JobPost_Update_Success",
+            });
+        }
+    } catch (err) {
+        console.log(err);        
+        res.status(500).send([{            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        }]);
+    }
+};
+
+
+exports.deletePost = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+        const userId = req.user.id;
+        const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
+        if (!post) {
+            return res.status(404).json({
+                Message: "존재하지 않는 채용공고입니다.",
+                ResultCode: "JobPost_Not_Exist",
+            });
+        }
+        const post_creator_id = post.creator_id;
+        console.log(userId)
+        console.log(post_creator_id);
+        if (userId == 1 || userId == post_creator_id) {
+            const deletePost = await models.recruit_post.destroy({
+                where: { id: postId }
+            });
+            console.log(deletePost);
+            if (deletePost == 1){
+                return res.status(200).json({
+                    Message: "채용공고 삭제가 완료되었습니다.",
+                    ResultCode: "JobPost_Delete_Success",
+                });
+            }
+        } else {
+            return res.status(404).json({
+                Message: "채용공고 작성자가 일치하지 않습니다.",
+                ResultCode: "JobPost_Delete_Success",
             });
         }
     } catch (err) {

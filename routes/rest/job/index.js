@@ -4,7 +4,7 @@ const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const { uploadPost, updatePost } = require('./job.js')
+const { uploadPost, updatePost, deletePost } = require('./job.js')
 
 try {
     fs.readdirSync('uploads');
@@ -43,6 +43,18 @@ router.patch('/update/:id', isLoggedIn, upload.single('img'), updatePost);
 
 // 채용공고 에러 핸들링 
 router.get('/update/:id', (req, res)=>{
+    res.status(405).send([{
+            Message: "Method not allowed", 
+            ResultCode: "ERR_INVALID_DATA"            
+        }]);
+    return res;
+});
+
+// 채용공고 삭제 
+router.delete('/delete/:id', isLoggedIn, deletePost);
+
+// 채용공고 에러 핸들링 
+router.get('/delete/:id', (req, res)=>{
     res.status(405).send([{
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            

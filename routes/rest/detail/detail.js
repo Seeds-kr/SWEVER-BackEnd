@@ -8,8 +8,9 @@ async function getDetail(req, res) {
 
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['id', 'nation_id', 'company_name', 'description_title', 'description_content',
-                 'company_apply_link', 'posted_date', 'is_visa_sponsored','is_remoted',
+                ['id', 'creator_id', 'nation_id', 'company_name', 
+                 'description_title', 'description_content', 'company_apply_link', 
+                 'posted_date', 'is_visa_sponsored','is_remoted',
                  'is_dev', 'company_logo','salary', 'contract_form', 
                  'company_page_link', 'origin', 'tag', 'location'
             ],
