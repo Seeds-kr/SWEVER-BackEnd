@@ -3,7 +3,7 @@ const models = require('../../../models');
 exports.uploadPost = async (req, res, next) => {
     // req.body.content, req.body.url
     try {
-        console.log(req);
+        console.log(req.body);
         const post = await models.recruit_post.create({
             creator_id: req.user.id,
             nation_id: req.body.nation_id,

@@ -26,16 +26,19 @@ const upload = multer({
     limits: { fileSize: 50 * 1024 * 1024 },
 });
 
-router.post('/', isLoggedIn, upload.single('img'), uploadPost);
+// 채용공고 등록 
+router.post('/post', isLoggedIn, upload.single('img'), uploadPost);
  
-
-// 에러 핸들링
-router.get('/', (req, res)=>{
+// 채용공고 에러 핸들링
+router.get('/post', (req, res)=>{
     res.status(405).send([{
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
         }]);
     return res;
 });
+
+// 채용공고 수정 
+router.patch('/')
 
 module.exports = router;
