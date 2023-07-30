@@ -34,10 +34,10 @@ async function getDetail(req, res) {
             ]
         });
         if (!resp || resp.length === 0) {
-            return res.status(404).send([{
+            return res.status(404).send({
                 Message: "Data not found", 
                 ResultCode: "ERR_DATA_NOT_FOUND"
-            }]);
+            });
         }
         res.send([{
             Message: "Success", 
@@ -47,10 +47,10 @@ async function getDetail(req, res) {
     }
     catch (err) {
         console.log(err);        
-        res.status(500).send([{            
+        res.status(500).send({            
             Message: "Internal server error", 
             ResultCode: "ERR_INTERNAL_SERVER"
-        }]);
+        });
     }
 }
 

@@ -31,10 +31,10 @@ router.post('/post', isLoggedIn, upload.single('img'), uploadPost);
  
 // 채용공고 에러 핸들링
 router.get('/post', (req, res)=>{
-    res.status(405).send([{
+    res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
-        }]);
+        });
     return res;
 });
 
@@ -43,10 +43,10 @@ router.patch('/update/:id', isLoggedIn, upload.single('img'), updatePost);
 
 // 채용공고 에러 핸들링 
 router.get('/update/:id', (req, res)=>{
-    res.status(405).send([{
+    res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
-        }]);
+        });
     return res;
 });
 
@@ -55,10 +55,10 @@ router.delete('/delete/:id', isLoggedIn, deletePost);
 
 // 채용공고 에러 핸들링 
 router.get('/delete/:id', (req, res)=>{
-    res.status(405).send([{
+    res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
-        }]);
+        });
     return res;
 });
 

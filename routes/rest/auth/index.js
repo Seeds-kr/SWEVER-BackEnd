@@ -13,10 +13,10 @@ router.use((req, res, next) => {
 router.post('/join', isNotLoggedIn, join);
 
 router.get('/join', (req, res)=>{
-    res.status(405).send([{
+    res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
-        }]);
+        });
     return res;
 });
 
@@ -24,10 +24,10 @@ router.get('/join', (req, res)=>{
 router.post('/login', isNotLoggedIn, login);
 
 router.get('/login', (req, res)=>{
-    res.status(405).send([{
+    res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
-        }]);
+        });
     return res;
 });
 
@@ -42,10 +42,10 @@ router.get('/kakao', passport.authenticate('kakao'));
 router.get('/kakao/callback', passport.authenticate('kakao', {
     failureRedirect: '/'
 }), (req, res) => {
-    res.send([{
+    res.send({
         Message: "카카오톡 로그인이 완료되었습니다.", 
         ResultCode: "Kakao_Login_Success"
-    }])
+    })
 });
 
 module.exports = router;
