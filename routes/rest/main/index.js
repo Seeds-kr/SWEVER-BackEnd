@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    getMain    
-} = require('./main.js');
+const { getMain } = require('./main.js');
 
 router.get('/', getMain);
 

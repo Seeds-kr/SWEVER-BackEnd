@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    getDetail    
-} = require('./detail.js');
+const { getDetail } = require('./detail.js');
 
 router.get('/:postId', getDetail);
 

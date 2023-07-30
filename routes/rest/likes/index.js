@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
 
-const { getRecruits_pagination } = require('./recruit.js');
+const { likes, dislikes } = require('./likes.js');
 
-router.get('/:page', getRecruits_pagination);
+router.post('/:postId', isLoggedIn, likes);
+router.delete('/:postId', isLoggedIn, dislikes)
 
-router.post('/', (req, res)=>{
+router.get('/', (req, res)=>{
     res.status(405).send([{
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            
