@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const passport = require('passport')
 
 exports.join = async (req, res, next) => {
-    const { email, name, password } = req.body;
     try {
+        const { email, name, password } = req.body;
         const exUser = await models.user.findOne({ where: { user_email: email }});
         if (exUser) {
             res.send([{

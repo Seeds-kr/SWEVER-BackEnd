@@ -4,8 +4,8 @@ const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
 
 const { likes, dislikes } = require('./likes.js');
 
-router.post('/:postId', isLoggedIn, likes);
-router.delete('/:postId', isLoggedIn, dislikes)
+router.post('/:id', isLoggedIn, likes);
+router.delete('/:id', isLoggedIn, dislikes)
 
 router.get('/', (req, res)=>{
     res.status(405).send([{
