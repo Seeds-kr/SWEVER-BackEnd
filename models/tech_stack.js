@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes)=>{
             comment: '기술 스택 고유번호'
         },
         tech_name:{
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
             allowNull: false,
             comment: '기술 스택 이름'
         }

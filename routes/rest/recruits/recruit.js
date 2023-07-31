@@ -11,10 +11,10 @@ async function getRecruits_pagination(req, res) {
     const whereCondition = {};
 
     if (query_remote == "true" || query_remote == "false") {
-        whereCondition.is_remoted = query_remote === "true" ? 1 : 0;
+        whereCondition.is_remoted = query_remote === "true" ? "1" : "0";
     }
     if (query_visa == "true" || query_visa == "false") {
-        whereCondition.is_visa_sponsored = query_visa === "true" ? 1 : 0;
+        whereCondition.is_visa_sponsored = query_visa === "true" ? "1" : "0";
     }
     if (query_keyword){
         whereCondition.description_title = {
@@ -33,7 +33,7 @@ async function getRecruits_pagination(req, res) {
             where:{
                 [Op.and]: [
                     [whereCondition],
-                    {is_dev: 1},
+                    {is_dev: "1"},
                 ]
             },
             order: [
