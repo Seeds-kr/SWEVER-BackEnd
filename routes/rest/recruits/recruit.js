@@ -8,8 +8,7 @@ async function getRecruits_pagination(req, res) {
     const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
-    const whereCondition = {};    
-    let keyword='';
+    const whereCondition = {};
 
     if (query_remote == "true" || query_remote == "false") {
         whereCondition.is_remoted = query_remote === "true" ? 1 : 0;
@@ -27,13 +26,16 @@ async function getRecruits_pagination(req, res) {
     const offset = limit * (parseInt(pageNum) - 1);
     try {
         let resp = await models.recruit_post.findAll({
-            group: ['id'],
             attributes: 
                 ['id','nation_id','company_name','description_title','description_content',
-                'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
+                'posted_date','is_visa_sponsored','is_remoted','is_dev','company_logo','tag','location'
             ],    
-            where:
-                [whereCondition],            
+            where:{
+                [Op.and]: [
+                    [whereCondition],
+                    {is_dev: 1},
+                ]
+            },
             order: [
                 ['posted_date', 'DESC']
             ],
@@ -41,7 +43,11 @@ async function getRecruits_pagination(req, res) {
                 {
                     model: models.nation,
                     attributes: ['nation_name']
-                }
+                },
+                {
+                    model: models.description_tech,
+                    attributes: ['tech_name']
+                },
             ]
         });
         resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        

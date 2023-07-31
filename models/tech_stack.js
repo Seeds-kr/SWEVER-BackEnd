@@ -20,10 +20,5 @@ module.exports = (sequelize, DataTypes)=>{
       timestamps: false
     });
 
-    // Foreign keys
-    tech_stack.associate = (models)=> {
-        tech_stack.belongsToMany(models.recruit_post, { through: 'description_tech', foreignKey: 'tech_id', otherKey: 'recruit_id' });
-    }
-
     return tech_stack;
 };
