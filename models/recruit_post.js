@@ -117,18 +117,10 @@ module.exports = (sequelize, DataTypes)=>{
 
     // Foreign keys
     recruit_post.associate = (models)=> {
-<<<<<<< HEAD
         recruit_post.belongsToMany(models.user, { through: 'post_likes', foreignKey: 'post_id' });
-        recruit_post.belongsToMany(models.tech_stack, { through: 'description_tech', foreignKey: 'recruit_id', otherKey: 'tech_id' });
+        recruit_post.hasMany(models.description_tech, { foreignKey: 'recruit_id' , sourceKey: 'id' });
         recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
         recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id', targetKey:'id' });
     }
-
-=======
-        recruit_post.belongsTo(models.user, { foreignKey: 'creator_id'});
-        recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id'});
-        recruit_post.hasMany(models.description_tech, { foreignKey: 'recruit_id' , sourceKey: 'id' }); 
-    }    
->>>>>>> feat/search
     return recruit_post;
 };
