@@ -8,9 +8,11 @@ async function getDetail(req, res) {
 
         const resp = await models.recruit_post.findAll({
             attributes: 
-                ['id', 'company_name', 'company_logo','description_title', 'description_content',
-                 'company_apply_link', 'salary', 'contract_form', 'tag', 'origin', 'posted_date', 
-                 'location', 'is_visa_sponsored','is_remoted', 'is_dev',
+                ['id', 'creator_id', 'nation_id', 'company_name', 
+                 'description_title', 'description_content', 'company_apply_link', 
+                 'posted_date', 'is_visa_sponsored','is_remoted',
+                 'is_dev', 'company_logo','salary', 'contract_form', 
+                 'company_page_link', 'origin', 'tag', 'location'
             ],
             where: {
                 id: postId,
@@ -32,10 +34,10 @@ async function getDetail(req, res) {
             ]
         });
         if (!resp || resp.length === 0) {
-            return res.status(404).send([{
+            return res.status(404).send({
                 Message: "Data not found", 
                 ResultCode: "ERR_DATA_NOT_FOUND"
-            }]);
+            });
         }
         res.send([{
             Message: "Success", 
@@ -45,10 +47,10 @@ async function getDetail(req, res) {
     }
     catch (err) {
         console.log(err);        
-        res.status(500).send([{            
+        res.status(500).send({            
             Message: "Internal server error", 
             ResultCode: "ERR_INTERNAL_SERVER"
-        }]);
+        });
     }
 }
 
