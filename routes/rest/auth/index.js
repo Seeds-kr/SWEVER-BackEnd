@@ -9,6 +9,9 @@ router.use((req, res, next) => {
     next();
 })
 
+
+router.get('/session', getSession);
+
 // POST /auth/join 
 router.post('/join', isNotLoggedIn, join);
 

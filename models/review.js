@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.STRING,
             comment: '미리보기 글'
         },
-        css_thumbnail:{
+        thumbnail:{
             type: DataTypes.STRING,
             comment: '썸네일'
         },
@@ -42,16 +42,25 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: true,
             comment: '데이터 수정 날짜'
         },
+        google_api:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            comment: '구글 api 인지 사용자 직접 입력인지',
+            defaultValue: 1
+        },
+        content:{
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: '리뷰 내용'            
+        }
     },{
         tableName: 'review',
         comment: '해외 취업 후기',
         timestamps: false,
     });
-
     // Foreign keys
     review.associate = (models)=> {
         review.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
     }
-    
     return review;
 };
