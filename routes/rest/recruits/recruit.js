@@ -43,19 +43,19 @@ async function getRecruits_pagination(req, res) {
             ]
         });
         resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
-        res.send([{
+        res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",            
             Size: 10,
             Response: resp
-        }])
+        })
     }
     catch (err) {
         console.log(err);        
-        res.status(500).send([{            
+        res.status(500).send({            
             Message: "Internal server error", 
             ResultCode: "ERR_INTERNAL_SERVER"
-        }]);
+        });
     }
 }
 
