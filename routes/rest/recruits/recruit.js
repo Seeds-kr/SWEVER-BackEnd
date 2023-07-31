@@ -1,36 +1,40 @@
 const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
+const { Op } = require('sequelize');
 
 async function getRecruits_pagination(req, res) {    
     const pageNum = req.params.page;
-    //const keyword = req.query.keyword;
-    //const query_nation = req.query.nation;
+    const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
-    let remote = 0;
-    let visa = 0;
-    let nation = 0;
+    const whereCondition = {};
 
-    if (query_remote=="true") {
-        remote = 1;
+    if (query_remote == "true" || query_remote == "false") {
+        whereCondition.is_remoted = query_remote === "true" ? "1" : "0";
     }
-    if (query_visa=="true") {
-        visa = 1;
+    if (query_visa == "true" || query_visa == "false") {
+        whereCondition.is_visa_sponsored = query_visa === "true" ? "1" : "0";
     }
+    if (query_keyword){
+        whereCondition.description_title = {
+            [Op.like]: `%${query_keyword}%`
+        }
+    }
+
     const limit = 10;
     const offset = limit * (parseInt(pageNum) - 1);
     try {
         let resp = await models.recruit_post.findAll({
-            group: ['id'],
             attributes: 
                 ['id','nation_id','company_name','description_title','description_content',
-                'posted_date','is_visa_sponsored','is_remoted','company_logo','tag','location'
+                'posted_date','is_visa_sponsored','is_remoted','is_dev','company_logo','tag','location'
             ],    
-            where:{                
-                nation_id: nation,
-                is_remoted: remote,
-                is_visa_sponsored: visa
+            where:{
+                [Op.and]: [
+                    [whereCondition],
+                    {is_dev: "1"},
+                ]
             },
             order: [
                 ['posted_date', 'DESC']
@@ -38,8 +42,12 @@ async function getRecruits_pagination(req, res) {
             include: [
                 {
                     model: models.nation,
-                    attributes: []
-                },                
+                    attributes: ['nation_name']
+                },
+                {
+                    model: models.description_tech,
+                    attributes: ['tech_name']
+                },
             ]
         });
         resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
