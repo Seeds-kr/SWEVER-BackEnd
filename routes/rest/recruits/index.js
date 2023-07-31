@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    getRecruits_pagination    
-} = require('./recruit.js');
+const { getRecruits_pagination } = require('./recruit.js');
 
 router.get('/:page', getRecruits_pagination);
 

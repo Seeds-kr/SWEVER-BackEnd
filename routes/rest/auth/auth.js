@@ -21,9 +21,8 @@ exports.getSession = async (req, res, next) => {
 
 
 exports.join = async (req, res, next) => {
-    console.log(req.body);
-    const { email, name, password } = req.body;
     try {
+        const { email, name, password } = req.body;
         const exUser = await models.user.findOne({ where: { user_email: email }});
         if (exUser) {
             return res.send({

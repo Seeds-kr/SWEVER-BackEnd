@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes)=>{
     user.associate = (models)=> {
         user.hasMany(models.recruit_post, { foreignKey: 'creator_id', sourceKey: 'id' });
         user.hasMany(models.review, { foreignKey: 'creator_id', sourceKey: 'id' });
+        user.belongsToMany(models.recruit_post, { through: 'post_likes', foreignKey: 'user_id' });
     }
 
     return user;
