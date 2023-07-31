@@ -4,6 +4,22 @@ const app = require('../../../app');
 const bcrypt = require('bcrypt');
 const passport = require('passport')
 
+exports.getSession = async (req, res, next) => {
+    console.log('==================')
+    console.log(req.user);
+    if (req.session.passport) {
+      res.send({
+        result: true,
+        user: req.session.user
+      });
+    } else {
+      res.status(404).send({
+        result: false
+      });
+    }
+  }
+
+
 exports.join = async (req, res, next) => {
     console.log(req.body);
     const { email, name, password } = req.body;
