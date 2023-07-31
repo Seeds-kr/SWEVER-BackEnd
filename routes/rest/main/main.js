@@ -62,20 +62,20 @@ async function getMain(req, res) {
             ]
         });
         
-        res.send([{
+        res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",            
             Size: 12,
             Remote: remote,
             Visa: visa
-        }])
+        })
     }
     catch (err) {
         console.log(err);        
-        res.status(500).send([{            
+        res.status(500).send({            
             Message: "Internal server error", 
             ResultCode: "ERR_INTERNAL_SERVER"
-        }]);
+        });
     }
 }
 
