@@ -1,6 +1,7 @@
 const models = require('../../../models');
 const sha256 = require('sha256');
 const app = require('../../../app');
+const { Op } = require('sequelize');
 
 async function getDetail(req, res) {
     try {
@@ -15,7 +16,10 @@ async function getDetail(req, res) {
                  'company_page_link', 'origin', 'tag', 'location'
             ],
             where: {
-                id: postId,
+                [Op.and]: [
+                    {id: postId},
+                    {is_dev: "1"}
+                ]
             },
             limit: 1,
             include: [
