@@ -23,14 +23,11 @@ async function getDetail(req, res) {
                     model: models.nation,
                     attributes: []
                     
-                },                
+                },           
                 {
-                    model: models.tech_stack,
-                    through: {
-                        attributes: []  // 중간 테이블에서 가져올 속성 지정
-                    },
-                    attributes: ['tech_name'] // tech_stack에서 가져올 속성 지정                    
-                }
+                    model: models.description_tech,
+                    attributes: ['tech_name']
+                },
             ]
         });
         if (!resp || resp.length === 0) {
