@@ -25,7 +25,7 @@ async function getDetail(req, res) {
             include: [
                 {
                     model: models.nation,
-                    attributes: []
+                    attributes: ['nation_name']
                     
                 },           
                 {
