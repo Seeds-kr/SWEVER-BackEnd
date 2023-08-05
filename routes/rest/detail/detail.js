@@ -19,7 +19,7 @@ async function getDetail(req, res) {
                 }
             ];
         }
-        const resp = await models.recruit_post.findAll({
+        let resp = await models.recruit_post.findOne({
             attributes: 
                 ['id', 'creator_id', 'nation_id', 'company_name', 
                  'description_title', 'description_content', 'company_apply_link', 
@@ -42,8 +42,7 @@ async function getDetail(req, res) {
                 {
                     model: models.description_tech,
                     attributes: ['tech_name']
-                },                
-                ...includeUser
+                },
             ],
         });
         if (!resp || resp.length === 0) {
@@ -52,6 +51,11 @@ async function getDetail(req, res) {
                 ResultCode: "ERR_DATA_NOT_FOUND"
             });
         }
+
+        // 추가: 맞는 사용자가 없는 경우 'likes' 속성을 추가하여 리턴
+        resp = resp.toJSON();
+        resp.likes = includeUser.length > 0;
+
         res.send([{
             Message: "Success", 
             ResultCode: "ERR_OK",            
