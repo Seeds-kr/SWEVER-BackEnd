@@ -109,7 +109,7 @@ module.exports = (sequelize, DataTypes)=>{
         recruit_post.belongsToMany(models.user, { through: 'post_likes' , sourceKey: 'id', foreignKey:'post_id'});
         recruit_post.hasMany(models.description_tech, { foreignKey: 'recruit_id' , sourceKey: 'id' });
         recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
-        recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id', targetKey:'id' });
+        recruit_post.belongsTo(models.nation_continent, { foreignKey: 'nation_id', targetKey:'id' });
     }
     return recruit_post;
 };

@@ -37,7 +37,7 @@ async function getDetail(req, res) {
             include: [
                 {
                     model: models.nation,
-                    attributes: ['nation_name']
+                    attributes: ['continent','nation']
                 },
                 {
                     model: models.description_tech,
@@ -63,7 +63,7 @@ async function getDetail(req, res) {
 
         res.send([{
             Message: "Success", 
-            ResultCode: "ERR_OK",            
+            ResultCode: "ERR_OK",
             Response: resp
         }])
     }

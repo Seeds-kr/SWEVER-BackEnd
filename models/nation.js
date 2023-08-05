@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
-    const nation =  sequelize.define('nation',{
+    const nation_continent =  sequelize.define('nation_continent',{
         // id:{
         //     type: DataTypes.INTEGER,
         //     allowNull: false,
@@ -9,21 +9,25 @@ module.exports = (sequelize, DataTypes)=>{
         //     primaryKey: true,
         //     comment: '국가 고유번호'
         // },
-        nation_name:{
+        nation:{
+            type: DataTypes.STRING,            
+            comment: '국가 이름'
+        },
+        continent:{
             type: DataTypes.STRING,
             allowNull: false,
-            comment: '국가 이름'
+            comment: '대륙 이름'
         }
     }, {
-      tableName: 'nation',
+      tableName: 'nation_continent',
       comment: '국가',
       timestamps: false
     });
 
     // Foreign keys
-    nation.associate = (models)=> {
-        nation.hasMany(models.recruit_post, { foreignKey: 'nation_id', targetKey: 'id' });
+    nation_continent.associate = (models)=> {
+        nation_continent.hasMany(models.recruit_post, { foreignKey: 'nation_id', targetKey: 'id' });
     }
 
-    return nation;
+    return nation_continent;
 };
