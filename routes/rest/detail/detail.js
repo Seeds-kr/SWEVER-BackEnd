@@ -1,6 +1,4 @@
 const models = require('../../../models');
-const sha256 = require('sha256');
-const app = require('../../../app');
 const { Op } = require('sequelize');
 
 async function getDetail(req, res) {
@@ -17,7 +15,7 @@ async function getDetail(req, res) {
                         'id': req.user.id
                     }
                 }
-            ];
+            ]
         }
         let resp = await models.recruit_post.findOne({
             attributes: 
@@ -36,7 +34,7 @@ async function getDetail(req, res) {
             limit: 1,
             include: [
                 {
-                    model: models.nation,
+                    model: models.nation_continent,
                     attributes: ['continent','nation']
                 },
                 {

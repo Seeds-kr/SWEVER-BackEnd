@@ -3,12 +3,14 @@ const sha256 = require('sha256');
 const app = require('../../../app');
 const { Op } = require('sequelize');
 
-async function getRecruits_pagination(req, res) {    
+async function getRecruits_pagination(req, res) {
     const pageNum = req.params.page;
     const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
     const whereCondition = {};
+    const limit = 10;
+    const offset = limit * (parseInt(pageNum) - 1);
 
     if (query_remote == "true" || query_remote == "false") {
         whereCondition.is_remoted = query_remote === "true" ? "1" : "0";
@@ -22,10 +24,10 @@ async function getRecruits_pagination(req, res) {
         }
     }
 
-    const limit = 10;
-    const offset = limit * (parseInt(pageNum) - 1);
     try {
-        let resp = await models.recruit_post.findAll({
+        const nation = await models.nation_continent.findAll();            
+
+        let post = await models.recruit_post.findAll({
             attributes: 
                 ['id','nation_id','company_name','description_title','description_content',
                 'posted_date','is_visa_sponsored','is_remoted','is_dev','company_logo','tag','location'
@@ -50,12 +52,16 @@ async function getRecruits_pagination(req, res) {
                 },
             ]
         });
-        resp = resp.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));        
+
+        post = post.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
         res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",            
             Size: 10,
-            Response: resp
+            Response: {
+                nation_continent_list: nation,
+                recruit_post_list: post
+            }
         })
     }
     catch (err) {

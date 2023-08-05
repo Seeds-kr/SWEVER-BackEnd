@@ -19,7 +19,7 @@ async function getMain(req, res) {
             ],
             include: [
                 {
-                    model: models.nation,
+                    model: models.nation_continent,
                     attributes: []
                     
                 }
@@ -40,7 +40,7 @@ async function getMain(req, res) {
             ],
             include: [
                 {
-                    model: models.nation,
+                    model: models.nation_continent,
                     attributes: []
                     
                 }
