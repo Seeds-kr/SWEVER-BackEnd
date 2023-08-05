@@ -2,24 +2,13 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const recruit_post = sequelize.define('recruit_post',{
-        id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            comment: '채용공고 고유번호'
-        },
-        creator_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0,
-            comment: '생성자 고유번호'
-        },
-        nation_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '국가 고유번호'
-        },
+        // id:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     autoIncrement: true,
+        //     primaryKey: true,
+        //     comment: '채용공고 고유번호'
+        // },
         company_name:{
             type: DataTypes.STRING,
             allowNull: false,
@@ -114,10 +103,10 @@ module.exports = (sequelize, DataTypes)=>{
         comment: '채용 공고',
         timestamps: false,
     });
-
+    
     // Foreign keys
     recruit_post.associate = (models)=> {
-        recruit_post.belongsToMany(models.user, { through: 'post_likes', foreignKey: 'post_id' });
+        recruit_post.belongsToMany(models.user, { through: 'post_likes' , sourceKey: 'id', foreignKey:'post_id'});
         recruit_post.hasMany(models.description_tech, { foreignKey: 'recruit_id' , sourceKey: 'id' });
         recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
         recruit_post.belongsTo(models.nation, { foreignKey: 'nation_id', targetKey:'id' });

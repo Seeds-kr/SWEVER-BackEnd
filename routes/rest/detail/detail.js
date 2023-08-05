@@ -6,13 +6,25 @@ const { Op } = require('sequelize');
 async function getDetail(req, res) {
     try {
         const postId = Number(req.params.postId);
-
+        let includeUser = [];
+        if (req.user && req.user.id) { // req.user.id가 존재하면
+            includeUser = [
+                {
+                    model: models.user,
+                    attributes: ['id'], // 원하는 사용자 정보를 가져올 수 있음
+                    through: { attributes: [] }, // 중간 테이블의 속성을 가져올 수 있음,
+                    where:{
+                        'id': req.user.id
+                    }
+                }
+            ];
+        }
         const resp = await models.recruit_post.findAll({
             attributes: 
                 ['id', 'creator_id', 'nation_id', 'company_name', 
                  'description_title', 'description_content', 'company_apply_link', 
                  'posted_date', 'is_visa_sponsored','is_remoted',
-                 'is_dev', 'company_logo','salary', 'contract_form', 
+                 'is_dev', 'company_logo','salary', 'contract_form',
                  'company_page_link', 'origin', 'tag', 'location'
             ],
             where: {
@@ -25,18 +37,18 @@ async function getDetail(req, res) {
             include: [
                 {
                     model: models.nation,
-                    attributes: ['nation_name']
-                    
-                },           
+                    attributes: ['nation_name']                    
+                },
                 {
                     model: models.description_tech,
                     attributes: ['tech_name']
-                },
-            ]
+                },                
+                ...includeUser
+            ],
         });
         if (!resp || resp.length === 0) {
             return res.status(404).send({
-                Message: "Data not found", 
+                Message: "Data not found",
                 ResultCode: "ERR_DATA_NOT_FOUND"
             });
         }

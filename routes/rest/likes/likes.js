@@ -24,7 +24,8 @@ exports.likes = async (req, res, next) => {
             });
             return res.send({
                 Message: "좋아요 등록이 완료되었습니다.",
-                ResultCode: "LikesToPost_Create_Success"
+                ResultCode: "LikesToPost_Create_Success",
+                Response: likes
             });
         }
     } catch (error) {

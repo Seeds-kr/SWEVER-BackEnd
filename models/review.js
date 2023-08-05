@@ -2,19 +2,13 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const review = sequelize.define('review',{
-        id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,       
-            autoIncrement: true,
-            primaryKey: true,
-            comment: '리뷰 고유번호',     
-        },
-        creator_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0,
-            comment: '생성자 고유번호'
-        },
+        // id:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,       
+        //     autoIncrement: true,
+        //     primaryKey: true,
+        //     comment: '리뷰 고유번호',     
+        // },
         title:{
             type: DataTypes.STRING,
             comment: '제목'
@@ -60,7 +54,7 @@ module.exports = (sequelize, DataTypes)=>{
     });
     // Foreign keys
     review.associate = (models)=> {
-        review.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
+        review.belongsTo(models.user, { foreignKey: 'creator_id'});
     }
     return review;
 };

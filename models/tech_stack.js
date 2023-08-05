@@ -2,13 +2,13 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const tech_stack=  sequelize.define('tech_stack',{
-        id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            comment: '기술 스택 고유번호'
-        },
+        // id:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     autoIncrement: true,
+        //     primaryKey: true,
+        //     comment: '기술 스택 고유번호'
+        // },
         tech_name:{
             type: DataTypes.JSON,
             allowNull: false,

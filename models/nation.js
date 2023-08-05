@@ -2,13 +2,13 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const nation =  sequelize.define('nation',{
-        id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            comment: '국가 고유번호'
-        },
+        // id:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     autoIncrement: true,
+        //     primaryKey: true,
+        //     comment: '국가 고유번호'
+        // },
         nation_name:{
             type: DataTypes.STRING,
             allowNull: false,
