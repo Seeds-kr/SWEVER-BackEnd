@@ -37,7 +37,7 @@ async function getDetail(req, res) {
             include: [
                 {
                     model: models.nation,
-                    attributes: ['nation_name']                    
+                    attributes: ['nation_name']
                 },
                 {
                     model: models.description_tech,
@@ -54,7 +54,12 @@ async function getDetail(req, res) {
 
         // 추가: 맞는 사용자가 없는 경우 'likes' 속성을 추가하여 리턴
         resp = resp.toJSON();
-        resp.likes = includeUser.length > 0;
+        const cnt = await models.post_likes.count();
+
+        resp.likes = {
+            filled: includeUser.length > 0,
+            count: cnt
+        };
 
         res.send([{
             Message: "Success", 
