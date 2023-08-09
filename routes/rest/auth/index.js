@@ -36,7 +36,7 @@ router.get('/login', (req, res)=>{
 
 
 // GET /auth/logout
-router.get('/logout', isLoggedIn, logout);
+router.post('/logout', isLoggedIn, logout);
 
 // /auth/kakao
 router.get('/kakao', passport.authenticate('kakao'));
