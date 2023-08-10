@@ -59,11 +59,11 @@ async function getDetail(req, res) {
             count: cnt
         };
 
-        res.send([{
+        res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",
             Response: resp
-        }])
+        })
     }
     catch (err) {
         console.log(err);        
