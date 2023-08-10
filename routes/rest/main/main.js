@@ -6,7 +6,7 @@ async function getMain(req, res) {
     try {
         const remote = await models.recruit_post.findAll({
             attributes: 
-                ['company_name', 'company_logo','description_title',
+                ['id', 'company_name', 'company_logo','description_title',
                  'is_visa_sponsored','is_remoted','location', 'posted_date',
             ],
             where: {
@@ -27,7 +27,7 @@ async function getMain(req, res) {
         });
         const visa = await models.recruit_post.findAll({
             attributes: 
-                ['company_name', 'company_logo','description_title',
+                ['id', 'company_name', 'company_logo','description_title',
                  'is_visa_sponsored','is_remoted','location', 'posted_date',
             ],
             where: {
