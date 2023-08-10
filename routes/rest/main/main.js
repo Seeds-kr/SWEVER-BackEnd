@@ -11,7 +11,8 @@ async function getMain(req, res) {
             ],
             where: {
                 is_remoted: 1,
-                is_visa_sponsored: 0
+                is_visa_sponsored: 0,
+                is_dev: 1,
             },
             limit: 6,
             order: [

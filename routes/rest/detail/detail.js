@@ -44,6 +44,7 @@ async function getDetail(req, res) {
             ],
         });
         if (!resp || resp.length === 0) {
+            console.log(postId);
             return res.status(404).send({
                 Message: "Data not found",
                 ResultCode: "ERR_DATA_NOT_FOUND"
