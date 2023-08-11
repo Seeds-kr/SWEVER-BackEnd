@@ -38,7 +38,7 @@ exports.join = async (req, res, next) => {
         })
         return res.send({
             Message: "회원가입이 완료되었습니다.", 
-            ResultCode: "Signin_Success", 
+            ResultCode: "Signup_Success", 
         })
     } catch (error) {
         console.log(error);        
