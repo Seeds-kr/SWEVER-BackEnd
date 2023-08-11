@@ -9,11 +9,15 @@ exports.getSession = async (req, res, next) => {
     console.log(req.user);
     if (req.session.passport) {
       res.send({
+        Message: "세션이 존재합니다.", 
+        ResultCode: "Session_Exist", 
         result: true,
         user: req.session.user
       });
     } else {
-      res.status(404).send({
+      res.send({
+        Message: "세션이 없습니다",
+        ResultCode: "Session_Not_Exist", 
         result: false
       });
     }
@@ -87,6 +91,7 @@ exports.login = (req, res, next) => {
 
 exports.logout = (req, res, next) => {
     req.logout(() => {
+        req.session.destroy();
         res.send({
             Message: "로그아웃이 완료되었습니다.", 
             ResultCode: "Logout_Success", 
