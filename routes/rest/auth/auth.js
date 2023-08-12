@@ -92,6 +92,7 @@ exports.login = (req, res, next) => {
 exports.logout = (req, res, next) => {
     req.logout(() => {
         req.session.destroy();
+        res.clearCookie('connect.sid', { path: '/' });
         res.send({
             Message: "로그아웃이 완료되었습니다.", 
             ResultCode: "Logout_Success", 
