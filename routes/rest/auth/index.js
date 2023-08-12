@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
-const { join, login, logout, getSession } = require('./auth');
+const { signup, login, logout, getSession } = require('./auth');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -13,9 +13,9 @@ router.use((req, res, next) => {
 router.get('/session', getSession);
 
 // POST /auth/join 
-router.post('/join', isNotLoggedIn, join);
+router.post('/signup', isNotLoggedIn, signup);
 
-router.get('/join', (req, res)=>{
+router.get('/signup', (req, res)=>{
     res.status(405).send({
             Message: "Method not allowed", 
             ResultCode: "ERR_INVALID_DATA"            

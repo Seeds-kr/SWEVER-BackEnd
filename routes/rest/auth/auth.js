@@ -24,7 +24,7 @@ exports.getSession = async (req, res, next) => {
   }
 
 
-exports.join = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     try {
         const { email, name, password } = req.body;
         const exUser = await models.user.findOne({ where: { user_email: email }});
