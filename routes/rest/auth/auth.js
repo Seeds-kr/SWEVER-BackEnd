@@ -9,18 +9,22 @@ exports.getSession = async (req, res, next) => {
     console.log(req.user);
     if (req.session.passport) {
       res.send({
+        Message: "세션이 존재합니다.", 
+        ResultCode: "Session_Exist", 
         result: true,
         user: req.session.user
       });
     } else {
-      res.status(404).send({
+      res.send({
+        Message: "세션이 없습니다",
+        ResultCode: "Session_Not_Exist", 
         result: false
       });
     }
   }
 
 
-exports.join = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     try {
         const { email, name, password } = req.body;
         const exUser = await models.user.findOne({ where: { user_email: email }});
@@ -38,7 +42,7 @@ exports.join = async (req, res, next) => {
         })
         return res.send({
             Message: "회원가입이 완료되었습니다.", 
-            ResultCode: "Signin_Success", 
+            ResultCode: "Signup_Success", 
         })
     } catch (error) {
         console.log(error);        
@@ -87,6 +91,8 @@ exports.login = (req, res, next) => {
 
 exports.logout = (req, res, next) => {
     req.logout(() => {
+        req.session.destroy();
+        res.clearCookie('connect.sid', { path: '/' });
         res.send({
             Message: "로그아웃이 완료되었습니다.", 
             ResultCode: "Logout_Success", 

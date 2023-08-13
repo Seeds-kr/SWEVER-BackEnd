@@ -30,8 +30,7 @@ async function getReviews_pagination(req, res) {
       (app, idx) => offset <= idx && idx <= offset + limit - 1
     );
 
-    res.send([
-      {
+    res.send({
         Message: "Success",
         ResultCode: "ERR_OK",
         Size: 10,
@@ -39,8 +38,7 @@ async function getReviews_pagination(req, res) {
           'user_data':resp1,
           'crawling_data':resp2
         }          
-      },
-    ]);
+      });
   } catch (err) {
     console.log(err);
     res.status(500).send([

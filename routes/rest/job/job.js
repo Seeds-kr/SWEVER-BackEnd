@@ -6,7 +6,7 @@ exports.uploadPost = async (req, res, next) => {
         console.log(req.body);
         const createData = {
             creator_id: req.user.id,
-            nation_id: req.body.nation_id,
+            nation_id: 1,
             company_name: req.body.company_name,
             description_title: req.body.description_title,
             description_content: req.body.description_content,
@@ -14,7 +14,7 @@ exports.uploadPost = async (req, res, next) => {
             posted_date: Math.floor(Date.now() / 1000),
             is_visa_sponsored: req.body.is_visa_sponsored,
             is_remoted: req.body.is_remoted,
-            is_dev: req.body.is_dev,
+            is_dev: 1,
             salary: req.body.salary,
             contract_form: req.body.contract_form,
             company_page_link: req.body.company_apply_link,

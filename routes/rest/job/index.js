@@ -27,7 +27,7 @@ const upload = multer({
 });
 
 // 채용공고 등록 
-router.post('/', isLoggedIn, upload.single('img'), uploadPost);
+router.post('/', isLoggedIn, upload.single('company_logo'), uploadPost);
  
 // 채용공고 에러 핸들링
 router.get('/', (req, res)=>{
