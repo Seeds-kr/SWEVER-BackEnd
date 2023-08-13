@@ -51,14 +51,13 @@ async function getRecruits_pagination(req, res) {
                     attributes: ['tech_name']
                 },
             ],
-            limit: 100 // 나중에 redis 써서 캐시에 저장하면 필요없어질 코드. 임시방편으로 일단 100개만 가져오도록함.
+            limit: 123 // 나중에 redis 써서 캐시에 저장하면 필요없어질 코드. 임시방편으로 일단 100개만 가져오도록함.
         });
-
         post = post.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
         res.send({
             Message: "Success", 
-            ResultCode: "ERR_OK",            
-            Size: 10,
+            ResultCode: "ERR_OK",                    
+            Size: post.length,
             Response: {
                 recruit_post_list: post
             }
