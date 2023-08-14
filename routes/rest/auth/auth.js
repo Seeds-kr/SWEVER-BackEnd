@@ -12,7 +12,8 @@ exports.getSession = async (req, res, next) => {
         Message: "세션이 존재합니다.", 
         ResultCode: "Session_Exist", 
         result: true,
-        user: req.session.user
+        user: req.session.user,
+        user_id: req.user.id,
       });
     } else {
       res.send({
