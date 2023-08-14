@@ -6,6 +6,7 @@ const { Op } = require('sequelize');
 async function getRecruits_pagination(req, res) {
     const pageNum = req.params.page;
     
+    const query_nation = req.query.nation;    
     const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
@@ -14,6 +15,9 @@ async function getRecruits_pagination(req, res) {
     const limit = 10;
     const offset = limit * (parseInt(pageNum) - 1);
 
+    if (query_nation) {
+        whereCondition.nation_id = query_nation;
+    }
     if (query_remote == "true" || query_remote == "false") {
         whereCondition.is_remoted = query_remote === "true" ? "1" : "0";
     }
