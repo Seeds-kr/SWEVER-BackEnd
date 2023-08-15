@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes)=>{
     });
 
     description_tech.associate = (models)=> {
-        description_tech.belongsTo(models.recruit_post, { foreignKey: 'recruit_id', targetKey: "id"});
+        description_tech.belongsTo(models.recruit_post, { foreignKey: 'recruit_id', targetKey: "id", onDelete: 'CASCADE'});
     }
     return description_tech;
 };
