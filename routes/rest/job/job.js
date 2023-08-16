@@ -1,6 +1,20 @@
 const fs = require('fs').promises;
 const models = require('../../../models');
 
+const deleteLogo = async(logoPath) => {
+    try {
+        await fs.access(logoPath)
+        await fs.unlink(logoPath);
+        console.log(`기존 로고 삭제 성공`);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.error(`존재하지 않는 로고: ${logoPath}`);
+        } else {
+            console.error(`기존 로고 삭제 실패: ${logoPath}`, error);
+        }
+    }
+};
+
 exports.uploadPost = async (req, res, next) => {
     // req.body.content, req.body.url
     try {
@@ -69,20 +83,17 @@ exports.updatePost = async (req, res, next) => {
             updated_at: new Date()
         }
         if(req.file) {
-            try {
                 updateData.company_logo = req.file.path;
-                if (oldCompanyLogo) {
-                    await fs.access(oldCompanyLogo)
-                    await fs.unlink(oldCompanyLogo);
-                    console.log(`기존 로고 삭제 성공`);
+                try {
+                    console.log(oldCompanyLogo);
+                    if (oldCompanyLogo) {
+                        await deleteLogo(oldCompanyLogo);
+                    }
+                } catch (error) {
+                    if (error.message === "oldCompanyLogo is not defined") {
+                        console.log("oldCompanyLogo의 경로가 존재하지 않습니다.")
+                    }
                 }
-            } catch (error) {
-                if (error.code === 'ENOENT') {
-                    console.error(`존재하지 않는 로고: ${oldCompanyLogo}`);
-                } else {
-                    console.error(`기존 로고 삭제 실패: ${oldCompanyLogo}`, error);
-                }
-            }
         }
         console.log(updateData);
         const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
@@ -146,22 +157,16 @@ exports.deletePost = async (req, res, next) => {
             });
             console.log(deletePost);
             if (deletePost == 1){
-                if(oldCompanyLogo) {
-                    try {
-                        if (oldCompanyLogo) {
-                            await fs.access(oldCompanyLogo)
-                            await fs.unlink(oldCompanyLogo);
-                            console.log(`기존 로고 삭제 성공`);
-                        }
-                    } catch (error) {
-                        console.log("로고 에러:", error);
-                        if (error.code === 'ENOENT') {
-                            console.error(`존재하지 않는 로고: ${oldCompanyLogo}`);
-                        } else {
-                            console.error(`기존 로고 삭제 실패: ${oldCompanyLogo}`, error);
-                        }
+                try {
+                    console.log(oldCompanyLogo);
+                    if (oldCompanyLogo) {
+                        await deleteLogo(oldCompanyLogo);
                     }
-                }   
+                } catch (error) {
+                    if (error.message === "oldCompanyLogo is not defined") {
+                        console.log("oldCompanyLogo의 경로가 존재하지 않습니다.")
+                    }
+                }
                 return res.status(200).json({
                     Message: "채용공고 삭제가 완료되었습니다.",
                     ResultCode: "JobPost_Delete_Success",
