@@ -39,7 +39,7 @@ async function getRecruits_pagination(req, res) {
             where:{
                 [Op.and]: [
                     [whereCondition],
-                    {is_dev: "1"},
+                    {is_dev: "1"}
                 ]
             },
             order: [
@@ -55,15 +55,17 @@ async function getRecruits_pagination(req, res) {
                     attributes: ['tech_name']
                 },
             ],
-            limit: 123 // 나중에 redis 써서 캐시에 저장하면 필요없어질 코드. 임시방편으로 일단 100개만 가져오도록함.
+            //limit: 123 // 나중에 redis 써서 캐시에 저장하면 필요없어질 코드. 임시방편으로 일단 100개만 가져오도록함.
         });
-        post = post.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
+        post_pagination = post.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
         res.send({
             Message: "Success", 
-            ResultCode: "ERR_OK",                    
-            Size: post.length,
+            ResultCode: "ERR_OK",
+            Size: post_pagination.length,
             Response: {
-                recruit_post_list: post
+                total_page: parseInt(post.length / 10) + 1,
+                current_page: pageNum,
+                recruit_post_list: post_pagination
             }
         })
     }
