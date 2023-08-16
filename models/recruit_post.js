@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes)=>{
         },
         company_email:{
             type: DataTypes.STRING(40),
-            allowNull: false,
+            allowNull: true,
             comment: '회사 연락 이메일'
         },
         description_title:{
