@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: false,
             comment: '회사 이름'
         },
+        company_email:{
+            type: DataTypes.STRING(40),
+            allowNull: false,
+            comment: '회사 연락 이메일'
+        },
         description_title:{
             type: DataTypes.STRING,
             allowNull: false,

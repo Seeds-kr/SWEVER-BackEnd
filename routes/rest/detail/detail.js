@@ -19,7 +19,7 @@ async function getDetail(req, res) {
         }
         let resp = await models.recruit_post.findOne({
             attributes: 
-                ['id', 'creator_id', 'nation_id', 'company_name', 
+                ['id', 'creator_id', 'nation_id', 'company_name', 'company_email',
                  'description_title', 'description_content', 'company_apply_link', 
                  'posted_date', 'is_visa_sponsored','is_remoted',
                  'is_dev', 'company_logo','salary', 'contract_form',
