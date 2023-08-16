@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { isLoggedIn } = require('../../../middlewares');
+
 
 const {
     getReviews_pagination,    
@@ -8,8 +10,8 @@ const {
 } = require('./review.js');
 
 router.get('/:page', getReviews_pagination);
-router.post('/:id', deleteReview);
-router.post('/', upsertReview);
+router.post('/:id', isLoggedIn, deleteReview);
+router.post('/', isLoggedIn, upsertReview);
 
 router.use((req, res, next) => {
     res.status(400).send([{
