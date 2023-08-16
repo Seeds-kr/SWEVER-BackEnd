@@ -39,7 +39,7 @@ router.get('/', (req, res)=>{
 });
 
 // 채용공고 수정 
-router.patch('/:id', isLoggedIn, upload.single('img'), updatePost);
+router.patch('/:id', isLoggedIn, upload.single('company_logo'), updatePost);
 
 // 채용공고 삭제 
 router.delete('/:id', isLoggedIn, deletePost);

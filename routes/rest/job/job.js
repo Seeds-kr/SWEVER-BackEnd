@@ -1,3 +1,4 @@
+const fs = require('fs').promises;
 const models = require('../../../models');
 
 exports.uploadPost = async (req, res, next) => {
@@ -46,6 +47,7 @@ exports.updatePost = async (req, res, next) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
+        const oldCompanyLogo = req.body.old_company_logo;
         const updateData = {
             nation_id: req.body.nation_id,
             company_name: req.body.company_name,
@@ -63,7 +65,20 @@ exports.updatePost = async (req, res, next) => {
             updated_at: new Date()
         }
         if(req.file) {
-            updateData.company_logo = req.file.path;
+            try {
+                updateData.company_logo = req.file.path;
+                if (oldCompanyLogo) {
+                    await fs.access(oldCompanyLogo)
+                    await fs.unlink(oldCompanyLogo);
+                    console.log(`기존 로고 삭제 성공`);
+                }
+            } catch (error) {
+                if (error.code === 'ENOENT') {
+                    console.error(`존재하지 않는 로고: ${oldCompanyLogo}`);
+                } else {
+                    console.error(`기존 로고 삭제 실패: ${oldCompanyLogo}`, error);
+                }
+            }
         }
         console.log(updateData);
         const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
@@ -112,7 +127,7 @@ exports.deletePost = async (req, res, next) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
-        const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
+        const post = await models.recruit_post.findOne({ attributes: [ 'creator_id', 'company_logo' ], where: { id: postId }});
         if (!post) {
             return res.status(404).json({
                 Message: "존재하지 않는 채용공고입니다.",
@@ -120,14 +135,33 @@ exports.deletePost = async (req, res, next) => {
             });
         }
         const post_creator_id = post.creator_id;
-        console.log(userId)
+        const oldCompanyLogo = post.company_logo;
+        console.log(post);
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~")
         console.log(post_creator_id);
+        console.log(oldCompanyLogo);
         if (userId == 1 || userId == post_creator_id) {
             const deletePost = await models.recruit_post.destroy({
                 where: { id: postId }
             });
             console.log(deletePost);
             if (deletePost == 1){
+                if(oldCompanyLogo) {
+                    try {
+                        if (oldCompanyLogo) {
+                            await fs.access(oldCompanyLogo)
+                            await fs.unlink(oldCompanyLogo);
+                            console.log(`기존 로고 삭제 성공`);
+                        }
+                    } catch (error) {
+                        console.log("로고 에러:", error);
+                        if (error.code === 'ENOENT') {
+                            console.error(`존재하지 않는 로고: ${oldCompanyLogo}`);
+                        } else {
+                            console.error(`기존 로고 삭제 실패: ${oldCompanyLogo}`, error);
+                        }
+                    }
+                }   
                 return res.status(200).json({
                     Message: "채용공고 삭제가 완료되었습니다.",
                     ResultCode: "JobPost_Delete_Success",
