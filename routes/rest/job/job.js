@@ -140,10 +140,6 @@ exports.deletePost = async (req, res, next) => {
         }
         const post_creator_id = post.creator_id;
         const oldCompanyLogo = post.company_logo;
-        console.log(post);
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~")
-        console.log(post_creator_id);
-        console.log(oldCompanyLogo);
         if (userId == 1 || userId == post_creator_id) {
             const deletePost = await models.recruit_post.destroy({
                 where: { id: postId }
