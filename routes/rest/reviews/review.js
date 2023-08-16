@@ -54,7 +54,7 @@ async function upsertReview(req, res) {
   try {
     await models.review.upsert({
       id: req.body.id,
-      title: req.body.title,         
+      title: req.body.title,
       creator_id: req.user.id,
       thumbnail: req.body.thumbnail,
       updated_at: Date.now(),

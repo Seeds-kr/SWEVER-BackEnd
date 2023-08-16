@@ -63,8 +63,10 @@ async function getRecruits_pagination(req, res) {
             ResultCode: "ERR_OK",
             Size: post_pagination.length,
             Response: {
-                total_page: parseInt(post.length / 10) + 1,
-                current_page: pageNum,
+                page:{
+                    total: parseInt(post.length / 10) + 1,
+                    current: parseInt(pageNum),
+                },   
                 recruit_post_list: post_pagination
             }
         })
