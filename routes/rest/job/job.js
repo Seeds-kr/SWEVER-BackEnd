@@ -26,9 +26,11 @@ exports.uploadPost = async (req, res, next) => {
             createData.company_logo = req.file.path;
         }
         const post = await models.recruit_post.create(createData);
+        const postId = post.id;
         return res.send({
             Message: "채용공고 등록이 완료되었습니다.", 
-            ResultCode: "JobPost_Create_Success", 
+            ResultCode: "JobPost_Create_Success",
+            postId: postId,
         })
     } catch (err) {
         console.log(err);        
@@ -81,11 +83,13 @@ exports.updatePost = async (req, res, next) => {
                 return res.status(200).json({
                     Message: "채용공고 수정사항이 없습니다.",
                     ResultCode: "JobPost_No_Update",
+                    postId: postId
                 });
             } else if (updatePost[0] > 0){
                 return res.status(200).json({
                     Message: "채용공고 수정이 완료되었습니다.",
                     ResultCode: "JobPost_Update_Success",
+                    postId: postId
                 });
             }
         } else {
