@@ -69,7 +69,7 @@ exports.updatePost = async (req, res, next) => {
             nation_id: req.body.nation_id,
             company_name: req.body.company_name,
             company_email: req.body.company_email,
-            description_title: req.body.description_content,
+            description_title: req.body.description_title,
             description_content: req.body.description_content,
             company_apply_link: req.body.company_apply_link,
             is_visa_sponsored: req.body.is_visa_sponsored,
