@@ -1,24 +1,28 @@
-const fs = require('fs').promises;
 const models = require('../../../models');
+const upload = require('./index').upload; 
 
-const deleteLogo = async(logoPath) => {
-    try {
-        await fs.access(logoPath)
-        await fs.unlink(logoPath);
-        console.log(`기존 로고 삭제 성공`);
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            console.error(`존재하지 않는 로고: ${logoPath}`);
-        } else {
-            console.error(`기존 로고 삭제 실패: ${logoPath}`, error);
-        }
-    }
-};
+// const deleteLogo = async(logoPath) => {
+//     try {
+//         await fs.access(logoPath)
+//         await fs.unlink(logoPath);
+//         console.log(`기존 로고 삭제 성공`);
+//     } catch (error) {
+//         if (error.code === 'ENOENT') {
+//             console.error(`존재하지 않는 로고: ${logoPath}`);
+//         } else {
+//             console.error(`기존 로고 삭제 실패: ${logoPath}`, error);
+//         }
+//     }
+// };
 
 exports.uploadPost = async (req, res, next) => {
     // req.body.content, req.body.url
     try {
-        console.log(req.body);
+        console.log("File uploaded successfully");
+        console.log("=============");
+        //console.log(req.body);
+        console.log(req);
+        
         const createData = {
             creator_id: req.user.id,
             nation_id: 1,
@@ -38,19 +42,18 @@ exports.uploadPost = async (req, res, next) => {
             tag: req.body.tag,
             location: req.body.location
         }
-        if(req.file) {
-            createData.company_logo = req.file.path;
+        if (req.file){
+            createData.company_logo = req.file.location
         }
         const post = await models.recruit_post.create(createData);
         const postId = post.id;
-        const companyLogo = post.company_logo;
         return res.send({
             Message: "채용공고 등록이 완료되었습니다.", 
             ResultCode: "JobPost_Create_Success",
-            postId: postId,
-            companyLogo: companyLogo 
-        })
-    } catch (err) {
+            postId: postId
+        });       
+    }        
+    catch (err) {
         console.log(err);        
         res.status(500).send({            
             Message: "Internal server error", 
@@ -64,11 +67,11 @@ exports.updatePost = async (req, res, next) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
-        const oldCompanyLogo = req.body.old_company_logo;
+        //const oldCompanyLogo = req.body.old_company_logo;
         const updateData = {
             nation_id: req.body.nation_id,
             company_name: req.body.company_name,
-            company_email: req.body.company_email,
+            company_email: req.body.company_email,            
             description_title: req.body.description_content,
             description_content: req.body.description_content,
             company_apply_link: req.body.company_apply_link,
@@ -82,20 +85,11 @@ exports.updatePost = async (req, res, next) => {
             location: req.body.location,
             updated_at: new Date()
         }
-        if(req.file) {
-                updateData.company_logo = req.file.path;
-                try {
-                    console.log(oldCompanyLogo);
-                    if (oldCompanyLogo) {
-                        await deleteLogo(oldCompanyLogo);
-                    }
-                } catch (error) {
-                    if (error.message === "oldCompanyLogo is not defined") {
-                        console.log("oldCompanyLogo의 경로가 존재하지 않습니다.")
-                    }
-                }
-        }
         console.log(updateData);
+        
+        if (req.file){
+            createData.company_logo = req.file.location
+        }
         const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
         if (!post) {
             return res.status(404).json({
@@ -112,14 +106,12 @@ exports.updatePost = async (req, res, next) => {
             if (updatePost[0] == 0) {
                 return res.status(200).json({
                     Message: "채용공고 수정사항이 없습니다.",
-                    ResultCode: "JobPost_No_Update",
-                    company_logo: updateData.company_logo
+                    ResultCode: "JobPost_No_Update"
                 });
             } else if (updatePost[0] > 0){
                 return res.status(200).json({
                     Message: "채용공고 수정이 완료되었습니다.",
-                    ResultCode: "JobPost_Update_Success",
-                    company_logo: updateData.company_logo
+                    ResultCode: "JobPost_Update_Success"
                 });
             }
         } else {
@@ -150,23 +142,23 @@ exports.deletePost = async (req, res, next) => {
             });
         }
         const post_creator_id = post.creator_id;
-        const oldCompanyLogo = post.company_logo;
+        //const oldCompanyLogo = post.company_logo;
         if (userId == 1 || userId == post_creator_id) {
             const deletePost = await models.recruit_post.destroy({
                 where: { id: postId }
             });
             console.log(deletePost);
             if (deletePost == 1){
-                try {
-                    console.log(oldCompanyLogo);
-                    if (oldCompanyLogo) {
-                        await deleteLogo(oldCompanyLogo);
-                    }
-                } catch (error) {
-                    if (error.message === "oldCompanyLogo is not defined") {
-                        console.log("oldCompanyLogo의 경로가 존재하지 않습니다.")
-                    }
-                }
+                // try {
+                //     console.log(oldCompanyLogo);
+                //     if (oldCompanyLogo) {
+                //         await deleteLogo(oldCompanyLogo);
+                //     }
+                // } catch (error) {
+                //     if (error.message === "oldCompanyLogo is not defined") {
+                //         console.log("oldCompanyLogo의 경로가 존재하지 않습니다.")
+                //     }
+                // }
                 return res.status(200).json({
                     Message: "채용공고 삭제가 완료되었습니다.",
                     ResultCode: "JobPost_Delete_Success",
