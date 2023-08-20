@@ -76,7 +76,7 @@ async function getRecruits_pagination(req, res) {
             Response: {
                 page:{
                     // total: parseInt(post.length / 10) + 1,
-                    total: totalPosts / 10 + 1,
+                    total: Math.floor(totalPosts / 10) + 1,
                     current: parseInt(pageNum),
                 },   
                 recruit_post_list: post
