@@ -10,7 +10,7 @@ const {
 } = require('./review.js');
 
 router.get('/:page', getReviews_pagination);
-router.post('/:id', isLoggedIn, deleteReview);
+router.delete('/:id', isLoggedIn, deleteReview);
 router.post('/', isLoggedIn, upsertReview);
 
 router.use((req, res, next) => {

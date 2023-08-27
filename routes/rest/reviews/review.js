@@ -9,7 +9,7 @@ async function getReviews_pagination(req, res) {
   const offset = limit * (parseInt(pageNum) - 1);
   try {
     let resp1 = await models.review.findAll({      
-      attributes: ["id", "title", "content", "thumbnail", "created_at"],
+      attributes: ["id", "title", "content", "thumbnail", "created_at", "creator_id"],
       order: [["id", "DESC"]],
       where:{
         'google_api':'0'
@@ -80,11 +80,13 @@ async function upsertReview(req, res) {
 
 async function deleteReview(req, res) {
   try {
+    console.log(123);
     await models.review.destroy({
       where: {
         id: req.params.id
       }
     })
+    console.log(4324324);
     res.send([
     {
       Message: "SUCCESS",
