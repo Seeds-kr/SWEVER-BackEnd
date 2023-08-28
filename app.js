@@ -7,7 +7,7 @@ const compression = require('compression');
 const dotenv = require('dotenv');
 const passport = require('passport');
 
-dotenv.config(); // process.env
+dotenv.config(); // process.env 생성
 
 const passportConfig = require('./passport');
 const sequelize = require('./models').sequelize;
