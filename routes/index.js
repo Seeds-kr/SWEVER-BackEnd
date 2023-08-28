@@ -7,12 +7,11 @@ const options={
     credentials: true,
     optionSuccessStatus: 200
 };
-
 router.use((req, res, next) => {
     res.locals.user = req.user;
     req.session;
     next();
-})
+});
 
 router.use(cors(options));
 router.use('/rest', require('./rest'));
