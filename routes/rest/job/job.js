@@ -121,7 +121,8 @@ exports.updatePost = async (req, res, next) => {
             });
             return res.status(200).json({
                 Message: "채용공고 수정이 완료되었습니다.",
-                ResultCode: "JobPost_Update_Success"
+                ResultCode: "JobPost_Update_Success",
+                company_logo: updateData.company_logo
             });            
         } else {
             return res.status(404).json({
