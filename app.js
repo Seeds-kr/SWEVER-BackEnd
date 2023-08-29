@@ -10,7 +10,7 @@ const RedisStore = require('connect-redis').default;
 const dotenv = require('dotenv');
 const passport = require('passport');
 
-dotenv.config(); // process.env
+dotenv.config(); // process.env 생성
 
 const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,

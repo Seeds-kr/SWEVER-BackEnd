@@ -64,19 +64,17 @@ async function getRecruits_pagination(req, res) {
                 },
             ],
             offset: offset,
-            limit: limit // 나중에 redis 써서 캐시에 저장하면 필요없어질 코드. 임시방편으로 일단 100개만 가져오도록함.
+            limit: 10
         });
         console.log(post.length);
         // post_pagination = post.filter((app, idx) => (offset <= idx && idx <= offset + limit - 1));
         res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",
-            // Size: post_pagination.length,
-            // Size: 10,
+            Size: post.length,            
             Response: {
                 page:{
-                    // total: parseInt(post.length / 10) + 1,
-                    total: Math.floor(totalPosts / 10) + 1,
+                    total: parseInt((totalPosts-1) / 10) + 1,
                     current: parseInt(pageNum),
                 },   
                 recruit_post_list: post
