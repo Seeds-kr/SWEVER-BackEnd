@@ -1,5 +1,32 @@
 const models = require('../../../models');
-const upload = require('./index').upload; 
+const aws = require('aws-sdk');
+
+aws.config.update({
+    region: process.env.AWS_S3_REGION,
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_S3_SECRET_KEY
+});
+
+const s3 = new aws.S3();
+
+const extractKeyFromS3URL = (url) => {
+    const match = url.match(/^https:\/\/[^\/]+\/(.+)$/);
+    return match ? match[1] : null;
+};
+
+const deleteLogoS3 = async (filePath) => {
+    try {
+        const imageKey = extractKeyFromS3URL(filePath);
+        const params = {
+            Bucket: process.env.AWS_BUCKET,
+            Key: imageKey
+        };
+        await s3.deleteObject(params).promise();
+        console.log(`Image ${filePath} deleted successfully from S3.`); 
+    } catch(error) {
+        console.error(`Failed to delete image ${filePath} from S3.`, error);
+    }
+};
 
 exports.uploadPost = async (req, res, next) => {
     // req.body.content, req.body.url
@@ -54,6 +81,7 @@ exports.updatePost = async (req, res, next) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
+        const oldCompanyLogo = req.body.old_company_logo;
         const updateData = {
             nation_id: req.body.nation_id,
             company_name: req.body.company_name,
@@ -75,6 +103,9 @@ exports.updatePost = async (req, res, next) => {
         
         if (req.file){
             updateData.company_logo = req.file.location
+            if (oldCompanyLogo) {
+                await deleteLogoS3(oldCompanyLogo);
+            }
         }
         const post = await models.recruit_post.findOne({ attributes: [ 'creator_id' ], where: { id: postId }});
         if (!post) {
@@ -120,7 +151,10 @@ exports.deletePost = async (req, res, next) => {
             });
         }
         const post_creator_id = post.creator_id;
-        //const oldCompanyLogo = post.company_logo;
+        const oldCompanyLogo = post.company_logo;
+        if (oldCompanyLogo) {
+            await deleteLogoS3(oldCompanyLogo);
+        }
         if (userId == 1 || userId == post_creator_id) {
             const deletePost = await models.recruit_post.destroy({
                 where: { id: postId }
