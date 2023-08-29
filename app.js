@@ -57,6 +57,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false, // http 적용할 때 ture로 바꾸기
+    maxAge: 7 * 24 * 60 * 60 * 1000, //7일 
   },
   store: new RedisStore({ client: redisClient }),
 }));
