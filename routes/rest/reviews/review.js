@@ -54,26 +54,33 @@ async function getReview(req, res){
   const reviewId = Number(req.params.id);
   try {
     const resp = await models.review.findOne({
-      attributes: null,
-      where: {
-              id: reviewId      
-      },
-      limit: 1,
+    attributes: null,
+    where: {
+      id: reviewId      
+    }
     });
-    res.send([
-    {
-      Message: "SUCCESS",
-      ResultCode: "ERR_OK",
-      Response: resp
-    }]);
-  }
+    if (resp == null){
+      res.status(404).send([
+      {
+        "Message": "Resource not found",
+        "ResultCode": "ERR_RESOURCE_NOT_FOUND"
+      }]);
+    }
+    else {
+      res.send([{
+        Message: "SUCCESS",
+        ResultCode: "ERR_OK",
+        Response: resp
+      }]);
+    }
+  } 
   catch (err) {
     console.log(err);
     res.status(500).send([
-      {
-        Message: "Internal server error",
-        ResultCode: "ERR_INTERNAL_SERVER",
-      },
+    {
+      Message: "Internal server error",
+      ResultCode: "ERR_INTERNAL_SERVER",
+    },
     ]);
   }
 }
