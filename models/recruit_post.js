@@ -2,26 +2,22 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes)=>{
     const recruit_post = sequelize.define('recruit_post',{
-        recruit_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '채용공고 고유번호',
-            primaryKey: true
-        },
-        nation_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '국가 고유번호'
-        },
+        // id:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     autoIncrement: true,
+        //     primaryKey: true,
+        //     comment: '채용공고 고유번호'
+        // },
         company_name:{
             type: DataTypes.STRING,
             allowNull: false,
             comment: '회사 이름'
         },
-        company_city:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '회사 도시 이름'
+        company_email:{
+            type: DataTypes.STRING(40),
+            allowNull: true,
+            comment: '회사 연락 이메일'
         },
         description_title:{
             type: DataTypes.STRING,
@@ -56,7 +52,7 @@ module.exports = (sequelize, DataTypes)=>{
             comment: '원격 근무 여부'
         },
         company_logo:{
-            type: DataTypes.BLOB('medium'),
+            type: DataTypes.STRING,
             allowNull: true,
             comment: '회사 로고'
         },
@@ -68,7 +64,7 @@ module.exports = (sequelize, DataTypes)=>{
         contract_form:{
             type: DataTypes.STRING,
             allowNull: true,
-            comment: '채용 형태' // ??
+            comment: '채용 형태'
         },
         company_page_link:{
             type: DataTypes.STRING,
@@ -102,31 +98,23 @@ module.exports = (sequelize, DataTypes)=>{
             defaultValue: Sequelize.NOW(),
             comment: '데이터 삽입 날짜'
         },
-        created_by:{
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '데이터 삽입자 이름'
-        },
         updated_at:{
             type: DataTypes.DATE,
             allowNull: true,
             comment: '데이터 수정 날짜'
-        },
-        updated_by:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            comment: '데이터 수정자 이름'
         }
     },{
         tableName: 'recruit_post',
         comment: '채용 공고',
         timestamps: false,
     });
-
+    
     // Foreign keys
     recruit_post.associate = (models)=> {
-        recruit_post.belongsTo(models.nation, {foreignKey: 'nation_id', targetKey:'nation_id'});
-        recruit_post.hasMany(models.description_tech, {foreignKey: 'recruit_id',sourceKey:'recruit_id'});
+        recruit_post.belongsToMany(models.user, { through: 'post_likes' , sourceKey: 'id', foreignKey:'post_id'});
+        recruit_post.hasMany(models.description_tech, { foreignKey: 'recruit_id' , sourceKey: 'id' });
+        recruit_post.belongsTo(models.user, { foreignKey: 'creator_id', targetKey:'id' });
+        recruit_post.belongsTo(models.nation_continent, { foreignKey: 'nation_id', targetKey:'id' });
     }
     return recruit_post;
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
-const { join, join2, login, logout } = require('./auth');
+const { signup, login, logout, getSession } = require('./auth');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -9,12 +9,34 @@ router.use((req, res, next) => {
     next();
 })
 
+
+router.get('/session', getSession);
+
 // POST /auth/join 
-router.post('/join', isNotLoggedIn, join);
+router.post('/signup', isNotLoggedIn, signup);
+
+router.get('/signup', (req, res)=>{
+    res.status(405).send({
+            Message: "Method not allowed", 
+            ResultCode: "ERR_INVALID_DATA"            
+        });
+    return res;
+});
+
 // POST /auth/login
 router.post('/login', isNotLoggedIn, login);
+
+router.get('/login', (req, res)=>{
+    res.status(405).send({
+            Message: "Method not allowed", 
+            ResultCode: "ERR_INVALID_DATA"            
+        });
+    return res;
+});
+
+
 // GET /auth/logout
-router.get('/logout', isLoggedIn, logout);
+router.post('/logout', isLoggedIn, logout);
 
 // /auth/kakao
 router.get('/kakao', passport.authenticate('kakao'));
@@ -23,7 +45,10 @@ router.get('/kakao', passport.authenticate('kakao'));
 router.get('/kakao/callback', passport.authenticate('kakao', {
     failureRedirect: '/'
 }), (req, res) => {
-    res.send({ message: '카카오 로그인 성공 '});
+    res.send({
+        Message: "카카오톡 로그인이 완료되었습니다.", 
+        ResultCode: "Kakao_Login_Success"
+    })
 });
 
 module.exports = router;

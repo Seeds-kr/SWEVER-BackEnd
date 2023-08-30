@@ -1,24 +1,23 @@
+const Sequelize = require('sequelize');
+
 module.exports = (sequelize, DataTypes)=>{
-    const description_tech=  sequelize.define('description_tech',{
-        tech_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '기술 스택 고유번호'
-        },
-        recruit_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '채용공고 고유번호'
+    const description_tech =  sequelize.define('description_tech',{
+        // id: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     autoIncrement: true,
+        //     primaryKey: true
+        // },
+        tech_name: {
+            type: DataTypes.STRING
         }
     }, {
-      tableName: 'description_tech',
-      comment: '공고 스택'
+        tableName: 'description_tech',
+        timestamps: false
     });
 
-    // Foreign keys
     description_tech.associate = (models)=> {
-        description_tech.belongsTo(models.recruit_post, {foreignKey: 'recruit_id'});
-        description_tech.belongsTo(models.tech_stack, {foreignKey: 'tech_id'});
+        description_tech.belongsTo(models.recruit_post, { foreignKey: 'recruit_id', targetKey: "id", onDelete: 'CASCADE'});
     }
     return description_tech;
 };
