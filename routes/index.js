@@ -14,6 +14,7 @@ router.use((req, res, next) => {
 });
 
 router.use(cors(options));
+router.get("/", (req, res) => res.redirect("/rest/main"));
 router.use('/rest', require('./rest'));
 // router.get('/rest/join', renderJoin);
 // router.get('/rest/profile', renderProfile);

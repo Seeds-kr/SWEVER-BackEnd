@@ -4,6 +4,7 @@ const router = express.Router();
 const { getMain } = require('./main.js');
 
 router.get('/', getMain);
+router.get('/rest/main', getMain);
 
 router.post('/', (req, res)=>{
     res.status(405).send({
