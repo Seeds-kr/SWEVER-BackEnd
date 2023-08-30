@@ -3,7 +3,7 @@ const sha256 = require("sha256");
 const app = require("../../../app");
 
 async function getReviews_pagination(req, res) {
-  const pageNum = req.params.page;
+  const pageNum = req.query.page || 1; // 기본 페이지 번호는 1
 
   const limit = 5;
   const offset = limit * (parseInt(pageNum) - 1);
@@ -49,6 +49,42 @@ async function getReviews_pagination(req, res) {
     ]);
   }
 }
+
+async function getReview(req, res){
+  const reviewId = Number(req.params.id);
+  try {
+    const resp = await models.review.findOne({
+    attributes: null,
+    where: {
+      id: reviewId      
+    }
+    });
+    if (resp == null){
+      res.status(404).send([
+      {
+        "Message": "Resource not found",
+        "ResultCode": "ERR_RESOURCE_NOT_FOUND"
+      }]);
+    }
+    else {
+      res.send([{
+        Message: "SUCCESS",
+        ResultCode: "ERR_OK",
+        Response: resp
+      }]);
+    }
+  } 
+  catch (err) {
+    console.log(err);
+    res.status(500).send([
+    {
+      Message: "Internal server error",
+      ResultCode: "ERR_INTERNAL_SERVER",
+    },
+    ]);
+  }
+}
+
 
 async function upsertReview(req, res) {
   try {
@@ -106,6 +142,7 @@ async function deleteReview(req, res) {
 
 module.exports = {
   getReviews_pagination,
+  getReview,
   upsertReview,
   deleteReview
 };
