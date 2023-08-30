@@ -5,19 +5,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
 const session = require('express-session');
-const redis = require('redis');
+const redisClient = require('./redis/redisClient')
 const RedisStore = require('connect-redis').default;
 const dotenv = require('dotenv');
 const passport = require('passport');
 
 dotenv.config(); // process.env 생성
 
-const redisClient = redis.createClient({
-  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-  password: process.env.REDIS_PASSWORD,
-})
-
-redisClient.connect().catch(console.error);
 const passportConfig = require('./passport');
 const sequelize = require('./models').sequelize;
 const config = require('./config/config.json')[process.env.NODE_ENV || 'development'];
