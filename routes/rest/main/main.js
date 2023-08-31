@@ -61,9 +61,9 @@ async function getMain(req, res) {
                 ]
             });
             redisClient.set('remoteData', JSON.stringify(remote));
-            redisClient.expire('remoteData', 6000 * 24);
+            redisClient.expire('remoteData', 21600); // 6시간 뒤 expire
             redisClient.set('visaData', JSON.stringify(visa));
-            redisClient.expire('visaData', 6000 * 24);
+            redisClient.expire('visaData', 21600);
         }
         
         res.send({
