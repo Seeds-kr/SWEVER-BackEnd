@@ -10,7 +10,6 @@ async function getRecruits_pagination(req, res) {
     const query_keyword = req.query.keyword;    
     const query_remote = req.query.remote;
     const query_visa = req.query.visa;
-
     const whereCondition = {};
     const limit = 10;
     const offset = limit * (parseInt(pageNum) - 1);
