@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
-const { signup, login, logout, getSession } = require('./auth');
+const { signup, account, password, login, logout, getSession } = require('./auth');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -22,6 +22,12 @@ router.get('/signup', (req, res)=>{
         });
     return res;
 });
+
+// DELETE /auth/account - 회원탈퇴 기능
+router.delete('/account', isLoggedIn, account);
+
+// POST /auth/password - 비밀번호 확인 기능
+router.post('/password', isLoggedIn, password);
 
 // POST /auth/login
 router.post('/login', isNotLoggedIn, login);
