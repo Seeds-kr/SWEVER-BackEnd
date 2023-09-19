@@ -40,7 +40,6 @@ app.use(logger('dev'));
 app.use(express.json()); // req.body를 ajax json 요청으로 부터
 app.use(express.urlencoded({ extended: false })); // req.body 폼으로 부터 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
   resave: false,
