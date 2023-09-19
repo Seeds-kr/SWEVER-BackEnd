@@ -1,18 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn} = require('../../../middlewares');
-const fs = require('fs');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const path = require('path');
 const { uploadPost, updatePost, deletePost } = require('./job.js')
 
-try {
-    fs.readdirSync('uploads');
-} catch (error) {
-    fs.mkdirSync('uploads');
-}
 
 aws.config.update({
     region: process.env.AWS_S3_REGION,
