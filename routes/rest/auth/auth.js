@@ -179,7 +179,7 @@ exports.nickname = async (req, res, next) => {
     }
 }
 
-exports.login = (req, res, next) => {
+giexports.login = (req, res, next) => {
     passport.authenticate('local', (authError, user, info) => {
         if (authError) { // 서버 실패
             console.error(authError);
@@ -221,7 +221,7 @@ exports.logout = (req, res, next) => {
         res.clearCookie('connect.sid', { path: '/' });
         res.send({
             Message: "로그아웃이 완료되었습니다.", 
-            ResultCode: "Logout_Success", 
+            ResultCode: "Logout_Success"
         })
     });
 };
