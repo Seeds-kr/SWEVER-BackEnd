@@ -4,19 +4,17 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression');
-const session = require('express-session');
-const redisClient = require('./redis/redisClient')
-const RedisStore = require('connect-redis').default;
 const dotenv = require('dotenv');
 const passport = require('passport');
 
-dotenv.config(); // process.env 생성
+dotenv.config(); // process.env
 
 const passportConfig = require('./passport');
 const sequelize = require('./models').sequelize;
 const config = require('./config/config.json')[process.env.NODE_ENV || 'development'];
 // const viewPath = config.path;
 const cors = require('cors');
+const session = require('express-session');
 const history = require('connect-history-api-fallback');
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -51,10 +49,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false, // http 적용할 때 ture로 바꾸기
-    maxAge: 7 * 24 * 60 * 60 * 1000, //7일 - maxAge 설정 시 브라우저를 모두 닫아도 로그인 유지 됨
-    // maxAge 설정해제시 세션 쿠키가 되어서 브라우저 종료 시 로그인 해제
-  },
-  store: new RedisStore({ client: redisClient }),
+  }
 }));
 app.use(passport.initialize()); // req.use, req.login, req.isAuthenticate, req.logout
 app.use(passport.session()); // connect.sid라는 이름으로 세션 쿠키가 브라우저로 전송 
