@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const { isLoggedIn, isNotLoggedIn } = require('../../../middlewares');
-const { signup, account, password, login, logout, getSession } = require('./auth');
+const { signup, account, passwordCheck, password, nickname, login, logout, getSession } = require('./auth');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -27,7 +27,13 @@ router.get('/signup', (req, res)=>{
 router.delete('/account', isLoggedIn, account);
 
 // POST /auth/password - 비밀번호 확인 기능
-router.post('/password', isLoggedIn, password);
+router.post('/password', isLoggedIn, passwordCheck);
+
+// PATCH /auth/password
+router.patch('/password', isLoggedIn, password);
+
+// PATCH /auth/nickname
+router.patch('/nickname', isLoggedIn, nickname);
 
 // POST /auth/login
 router.post('/login', isNotLoggedIn, login);

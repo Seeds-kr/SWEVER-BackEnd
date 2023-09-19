@@ -80,7 +80,7 @@ exports.account = async (req, res, next) => {
     }
 }
 
-exports.password = async (req, res, next) => {
+exports.passwordCheck = async (req, res, next) => {
     try {
         const id = req.user.id;
         const password = req.body.password;
@@ -98,6 +98,72 @@ exports.password = async (req, res, next) => {
                     ResultCode: "Password_Not_Match" 
                 })
             }
+        } else {
+            return res.send({
+                Message: "존재하지 않는 회원입니다.", 
+                ResultCode: "Account_Not_Exist"
+            })
+        }
+    } catch (error) {
+        console.log(error);        
+        res.status(500).send({            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        });
+    }
+}
+
+exports.password = async (req, res, next) => {
+    try {
+        const id = req.user.id;
+        const currentPassword = req.body.currentPassword;
+        const newPassword = req.body.newPassword;
+        const exUser = await models.user.findOne({ where: { id: id }});
+        if (exUser) {
+            const result = await bcrypt.compare(currentPassword, exUser.user_password);
+            if(result) {
+                const hash = await bcrypt.hash(newPassword, 12);
+                await models.user.update({ user_password: hash }, {
+                    where: { id: id },
+                })
+                return res.send({
+                    Message: "비밀번호 변경이 완료되었습니다.", 
+                    ResultCode: "Password_Change_Success" 
+                })
+            } else {
+                return res.send({
+                    Message: "비밀번호가 일치하지 않습니다.", 
+                    ResultCode: "Password_Not_Match" 
+                })
+            }
+        } else {
+            return res.send({
+                Message: "존재하지 않는 회원입니다.", 
+                ResultCode: "Account_Not_Exist"
+            })
+        }
+    } catch (error) {
+        console.log(error);        
+        res.status(500).send({            
+            Message: "Internal server error", 
+            ResultCode: "ERR_INTERNAL_SERVER"
+        });
+    }
+}
+
+exports.nickname = async (req, res, next) => {
+    try {
+        const id = req.user.id;
+        const nickname = req.body.nickname;
+        const exUser = await models.user.findOne({ where: { id: id }});
+        if (exUser) {
+            await models.user.update({ user_name: nickname }, {
+                where: { id: id },
+            })
+            return res.send({
+                Message: "이름 변경이 완료되었습니다.", 
+                ResultCode: "Nickname_Change_Success" 
+            })
         } else {
             return res.send({
                 Message: "존재하지 않는 회원입니다.", 
