@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 
 const options={
-    origin: "http://localhost:3000",
+    origin: "https://www.swevertest.click",
     credentials: true,
     optionSuccessStatus: 200
 };
