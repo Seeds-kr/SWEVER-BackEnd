@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 
-const options={
-    origin: "https://www.swevertest.click",
-    credentials: true,
-    optionSuccessStatus: 200
-};
-// const options = {
-//     origin: ["https://www.swevertest.click", "http://localhost:3000"],
+// const options={
+//     origin: "https://www.swevertest.click",
 //     credentials: true,
 //     optionSuccessStatus: 200
 // };
+const options = {
+    origin: ["https://www.swevertest.click", "http://localhost:3000"],
+    credentials: true,
+    optionSuccessStatus: 200
+};
 router.use((req, res, next) => {
     res.locals.user = req.user;
     req.session;

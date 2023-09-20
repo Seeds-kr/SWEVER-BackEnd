@@ -209,11 +209,17 @@ exports.login = (req, res, next) => {
             }
             return res.send({
                 Message: "로그인이 완료되었습니다.", 
-                ResultCode: "Login_Success"
+                ResultCode: "Login_Success",
+                user: {
+                    id: user.id,
+                    email: user.user_email,
+                    name: user.user_name,
+                }
             })
         })
     })(req, res, next);
 };
+
 
 exports.logout = (req, res, next) => {
     req.logout(() => {
