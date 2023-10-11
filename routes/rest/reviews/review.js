@@ -1,6 +1,7 @@
 const models = require("../../../models");
 const sha256 = require("sha256");
 const app = require("../../../app");
+const { Op } = require('sequelize');
 
 async function getReviews_pagination(req, res) {
   const pageNum = req.query.page || 1; // 기본 페이지 번호는 1
@@ -12,7 +13,10 @@ async function getReviews_pagination(req, res) {
       attributes: ["id", "title", "content", "thumbnail", "created_at", "creator_id"],
       order: [["id", "DESC"]],
       where:{
-        'google_api':'0'
+        [Op.and]: [
+          {google_api: "0"},
+          {is_showed: "1"}
+        ]
       }
     });
     resp1 = resp1.filter(
@@ -23,7 +27,10 @@ async function getReviews_pagination(req, res) {
       attributes: ["id", "title", "link", "thumbnail", "created_at"],
       order: [["id", "DESC"]],
       where:{
-        'google_api':'1'
+        [Op.and]: [
+          {google_api: "1"},
+          {is_showed: "1"}
+        ]
       }
     });
     resp2 = resp2.filter(

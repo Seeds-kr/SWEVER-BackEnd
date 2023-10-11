@@ -92,7 +92,11 @@ async function getRecruits_pagination(req, res) {
 
 async function getInit(req, res) {
     try {
-        const nation = await models.nation_continent.findAll();            
+        const nation = await models.nation_continent.findAll({            
+            where: {
+                id: { [Op.not]: "1" }
+            }
+        });            
         res.send({
             Message: "Success", 
             ResultCode: "ERR_OK",
