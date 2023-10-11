@@ -49,7 +49,7 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
-    secure: false, // http 적용할 때 ture로 바꾸기
+    secure: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, //7일 - maxAge 설정 시 브라우저를 모두 닫아도 로그인 유지 됨
     // maxAge 설정해제시 세션 쿠키가 되어서 브라우저 종료 시 로그인 해제함
   },
