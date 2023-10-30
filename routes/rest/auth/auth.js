@@ -7,14 +7,17 @@ const passport = require('passport')
 exports.getSession = async (req, res, next) => {
     console.log('==================')
     console.log(req.user);
+    console.log(req.session);
     if (req.session.passport) {
-      res.send({
-        Message: "세션이 존재합니다.", 
-        ResultCode: "Session_Exist", 
-        result: true,
-        user: req.session.user,
-        user_id: req.user.id,
-      });
+      if (req.session.passport.user){
+	      res.send({
+	        Message: "세션이 존재합니다.", 
+        	ResultCode: "Session_Exist", 
+	        result: true,
+        	user: req.session.user,
+	        user_id: req.user.id,
+	      });
+	}
     } else {
       res.send({
         Message: "세션이 없습니다",
