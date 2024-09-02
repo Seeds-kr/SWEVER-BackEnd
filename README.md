@@ -111,7 +111,7 @@ Fndr서비스를 통해 사용자들은 원하는 국가, 비자지원 여부, �
     </td>
     <td align="center">
       <a href="https://github.com/yon11b" target="_blank">
-        백하연 <br />(Back-end)
+        백하연 <br />(Back-end & Server)
       </a>
   </tr>
 </table>
